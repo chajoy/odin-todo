@@ -10,7 +10,12 @@
 
 body {
     -webkit-font-smoothing: antialiased;
+    font-family: "Outfit", sans-serif;
     background-color: black;
+    min-height: 100vh;
+    height: 100vh;
+    background: rgb(235, 235, 213);
+    background: linear-gradient(180deg, rgba(235, 235, 213, 1) 0%, rgba(198, 198, 182, 1) 100%);
 }
 
 img,
@@ -50,4 +55,33 @@ h4,
 h5,
 h6 {
     text-wrap: balance;
+}
+
+.sidebar {
+    height: 100%;
+    background: rgb(235, 235, 213);
+    width: 300px;
+    padding: 50px;
+    display: grid;
+    grid-template-rows: repeat(3, 50px) 1fr;
+    gap: 20px;
+}
+
+.title {
+    font-size: 3rem;
+}
+
+.button {
+    padding: 10px;
+    border-bottom: 2px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    transition: border .2s;
+}
+
+.button:hover {
+    border-bottom: 5px solid black;
+    cursor: pointer;
+    font-weight: bold;
 }
