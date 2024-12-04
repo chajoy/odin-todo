@@ -1,42 +1,46 @@
 import "./styles.css";
 
-const Project = (title) => {
-    const todos = [];
+const Projects = (() => {
+    const projects = [];
 
-    const getTitle = () => {
-        return title;
-    }
+    const GetProject = (project) => projects.find(e => e.GetTitle() === project);
 
-    const getTodo = () => {
-        return todos;
-    }
-
-    const addTask = (task) => {
-        todos.push(task);
-    }
+    const Add = (project) => projects.push(Project(project));
 
     return {
-        getTitle,
-        addTask,
-        getTodo,
+        GetProject,
+        Add,
+    }
+})();
+
+function Project(title) {
+    const todos = [];
+    const _title = title;
+
+    const GetTitle = () => _title;
+    const GetTodo = () => todos.length > 0 ? todos : `List Empty`;
+    const AddTask = (title, desc, dueDate, prio) => todos.push(Task(title, desc, dueDate, prio));
+
+    return {
+        GetTitle,
+        AddTask,
+        GetTodo,
     }
 };
 
-class Task {
-    constructor(title, desc, dueDate, prio) {
-        this.title = title;
-        this.desc = desc;
-        this.dueDate = dueDate;
-        this.prio = prio;
+function Task(title, desc, dueDate, prio) {
+    return {
+        title,
+        desc,
+        dueDate,
+        prio,
     }
-
-
 }
 
-const projects = [];
+Projects.Add(`default`);
+Projects.GetProject(`default`).AddTask(`work`, `do work`, `now`, `urgent`);
+console.log(Projects.GetProject(`default`).GetTodo());
 
-projects.push(Project(`default`));
 
-projects[0].addTask(new Task(`work`, `do work`, `now`, `urgent`));
 
-console.log(projects[0].getTodo())
+
