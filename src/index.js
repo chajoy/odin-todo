@@ -30,10 +30,10 @@ function Project(title) {
 
 function Task(title, desc, dueDate, prio) {
     return {
-        title,
-        desc,
-        dueDate,
-        prio,
+        GetTitle: () => title,
+        GetDesc: () => desc,
+        GetDueDate: () => dueDate,
+        GetPrio: () => prio,
     }
 }
 
