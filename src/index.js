@@ -20,11 +20,20 @@ function Project(title) {
     const GetTitle = () => _title;
     const GetTodo = () => todos.length > 0 ? todos : `List Empty`;
     const AddTask = (title, desc, dueDate, prio) => todos.push(Task(title, desc, dueDate, prio));
+    const RemoveTask = (value) => {
+        let toRemove = todos.findIndex(e => e.GetTitle() === value.toLowerCase());
+        if (toRemove >= 0) {
+            todos.splice(toRemove, 1);
+        } else {
+            console.log(`Task Does Not Exist`);
+        }
+    };
 
     return {
         GetTitle,
         AddTask,
         GetTodo,
+        RemoveTask,
     }
 };
 
@@ -39,8 +48,5 @@ function Task(title, desc, dueDate, prio) {
 
 Projects.Add(`default`);
 Projects.GetProject(`default`).AddTask(`work`, `do work`, `now`, `urgent`);
+Projects.GetProject(`default`).RemoveTask(`test`);
 console.log(Projects.GetProject(`default`).GetTodo());
-
-
-
-
