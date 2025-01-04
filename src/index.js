@@ -14,16 +14,16 @@ const Projects = (() => {
 })();
 
 function Project(title) {
-    const todos = [];
-    const _title = title;
+    const tasks = [];
 
-    const GetTitle = () => _title;
-    const GetTodo = () => todos.length > 0 ? todos : `List Empty`;
-    const AddTask = (title, desc, dueDate, prio) => todos.push(Task(title, desc, dueDate, prio));
-    const RemoveTask = (value) => {
-        let toRemove = todos.findIndex(e => e.GetTitle() === value.toLowerCase());
+    const GetTitle = () => title;
+    const GetTaskList = () => tasks.length > 0 ? tasks : `[Project: ${title}] Task List Empty`;
+    const GetTask = (input) => tasks.length > 0 ? tasks[input] : `[Project: ${title}] Task List Empty`;
+    const AddTask = (title, desc, dueDate, prio) => tasks.push(Task(title, desc, dueDate, prio));
+    const RemoveTask = (input) => {
+        let toRemove = tasks.findIndex(e => e.GetTitle() === input.toLowerCase());
         if (toRemove >= 0) {
-            todos.splice(toRemove, 1);
+            tasks.splice(toRemove, 1);
         } else {
             console.log(`Task Does Not Exist`);
         }
@@ -32,21 +32,27 @@ function Project(title) {
     return {
         GetTitle,
         AddTask,
-        GetTodo,
+        GetTaskList,
         RemoveTask,
+        GetTask,
     }
 };
 
 function Task(title, desc, dueDate, prio) {
+    const Edit = (toEdit, value) => {
+
+    }
+
     return {
         GetTitle: () => title,
         GetDesc: () => desc,
         GetDueDate: () => dueDate,
         GetPrio: () => prio,
+        Edit,
     }
 }
 
 Projects.Add(`default`);
 Projects.GetProject(`default`).AddTask(`work`, `do work`, `now`, `urgent`);
-Projects.GetProject(`default`).RemoveTask(`test`);
-console.log(Projects.GetProject(`default`).GetTodo());
+Projects.GetProject(`default`).GetTask(0).Edit(`title`, `test`);
+console.log(Projects.GetProject(`default`).GetTask(0).GetTitle());
