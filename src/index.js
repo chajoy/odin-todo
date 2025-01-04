@@ -40,7 +40,22 @@ function Project(title) {
 
 function Task(title, desc, dueDate, prio) {
     const Edit = (toEdit, value) => {
-
+        switch (toEdit) {
+            case `title`:
+                title = value;
+                break;
+            case `desc`:
+                desc = value;
+                break;
+            case `dueDate`:
+                dueDate = value;
+                break;
+            case `prio`:
+                prio = value;
+                break;
+            default:
+                console.error(`[Task: ${title}] Property "${value}" Does Not Exist`);
+        }
     }
 
     return {
