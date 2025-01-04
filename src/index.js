@@ -3,21 +3,36 @@ import "./styles.css";
 const Projects = (() => {
     const projects = [];
 
-    const GetProject = (project) => projects.find(e => e.GetTitle() === project);
-
-    const Add = (project) => projects.push(Project(project));
+    const GetProjects = () => projects;
+    const GetProject = (project) => projects.find(e => e.title === project);
+    const Add = (project) => {
+        if (projects.findIndex(e => e.title === project) >= 0) {
+            console.error(`Project ${project} already exists`);
+        } else {
+            projects.push(Project(project));
+        }
+    }
+    const Remove = (project) => {
+        let index = projects.findIndex(e => e.GetTitle() === project);
+        if (index >= 0) {
+            projects.splice(index, 1);
+        } else {
+            console.error(`Project ${project} doesn't exist`);
+        }
+    }
 
     return {
         GetProject,
+        GetProjects,
         Add,
+        Remove,
     }
 })();
 
 function Project(title) {
     const tasks = [];
 
-    const GetTitle = () => title;
-    const GetTaskList = () => tasks.length > 0 ? tasks : `[Project: ${title}] Task List Empty`;
+    const GetTasks = () => tasks.length > 0 ? tasks : `[Project: ${title}] Task List Empty`;
     const GetTask = (input) => tasks.length > 0 ? tasks[input] : `[Project: ${title}] Task List Empty`;
     const AddTask = (title, desc, dueDate, prio) => tasks.push(Task(title, desc, dueDate, prio));
     const RemoveTask = (input) => {
@@ -30,44 +45,25 @@ function Project(title) {
     };
 
     return {
-        GetTitle,
+        title,
         AddTask,
-        GetTaskList,
+        GetTasks,
         RemoveTask,
         GetTask,
     }
 };
 
 function Task(title, desc, dueDate, prio) {
-    const Edit = (toEdit, value) => {
-        switch (toEdit) {
-            case `title`:
-                title = value;
-                break;
-            case `desc`:
-                desc = value;
-                break;
-            case `dueDate`:
-                dueDate = value;
-                break;
-            case `prio`:
-                prio = value;
-                break;
-            default:
-                console.error(`[Task: ${title}] Property "${value}" Does Not Exist`);
-        }
-    }
-
     return {
-        GetTitle: () => title,
-        GetDesc: () => desc,
-        GetDueDate: () => dueDate,
-        GetPrio: () => prio,
-        Edit,
+        title,
+        desc,
+        dueDate,
+        prio,
     }
 }
 
 Projects.Add(`default`);
 Projects.GetProject(`default`).AddTask(`work`, `do work`, `now`, `urgent`);
-Projects.GetProject(`default`).GetTask(0).Edit(`title`, `test`);
-console.log(Projects.GetProject(`default`).GetTask(0).GetTitle());
+Projects.GetProject(`default`).GetTask(0).title = `test`;
+Projects.GetProject(`default`).title = `test`;
+console.log(Projects.GetProject(`test`).GetTask(0).title);
