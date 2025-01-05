@@ -1,4 +1,9 @@
 import "./styles.css";
+import { createProject } from "./dom";
+
+document.querySelector(`#btn-addProj`).addEventListener(`click`, () => {
+    addProject();
+})
 
 const Projects = (() => {
     const projects = [];
@@ -11,6 +16,7 @@ const Projects = (() => {
         } else {
             projects.push(Project(project));
         }
+
     }
     const Remove = (project) => {
         let index = projects.findIndex(e => e.GetTitle() === project);
@@ -31,6 +37,7 @@ const Projects = (() => {
 
 function Project(title) {
     const tasks = [];
+    const container = createProject(title);
 
     const GetTasks = () => tasks.length > 0 ? tasks : `[Project: ${title}] Task List Empty`;
     const GetTask = (input) => tasks.length > 0 ? tasks[input] : `[Project: ${title}] Task List Empty`;
@@ -62,8 +69,7 @@ function Task(title, desc, dueDate, prio) {
     }
 }
 
-Projects.Add(`default`);
-Projects.GetProject(`default`).AddTask(`work`, `do work`, `now`, `urgent`);
-Projects.GetProject(`default`).GetTask(0).title = `test`;
-Projects.GetProject(`default`).title = `test`;
-console.log(Projects.GetProject(`test`).GetTask(0).title);
+function addProject() {
+    let title = prompt("Enter Project Title");
+    Projects.Add(title);
+}

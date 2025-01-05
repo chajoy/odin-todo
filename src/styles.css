@@ -105,6 +105,20 @@ main {
     gap: 20px;
 }
 
+.page-title {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+}
+
+.page-title img:hover {
+    cursor: pointer;
+}
+
+.page-title img:active {
+    transform: scale(1.1);
+}
+
 .project {
     display: flex;
     flex-direction: column;
@@ -130,6 +144,11 @@ main {
 .svg-arrow {
     height: 50px;
     width: 50px;
+}
+
+.svg-plus {
+    height: 25px;
+    width: 25px;
 }
 
 .p_task {
