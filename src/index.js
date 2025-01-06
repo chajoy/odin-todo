@@ -1,8 +1,8 @@
 import "./styles.css";
-import { createProject } from "./dom";
+import * as buildPage from "./pages";
 
 document.querySelector(`#btn-addProj`).addEventListener(`click`, () => {
-    addProject();
+    buildPage.projects();
 })
 
 const Projects = (() => {
