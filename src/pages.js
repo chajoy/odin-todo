@@ -1,7 +1,22 @@
 import plusIcon from "./img/plus-circle-fill.svg";
 import dropdownIcon from "./img/arrow-down-short.svg";
 import { addProject } from "./index";
+import { GetProjects } from "./index";
+
 const container = document.querySelector(`main`);
+
+document.querySelectorAll(`.sidebar div`).forEach((e) => e.addEventListener(`click`, () => {
+    switch (e.getAttribute(`id`)) {
+        case `btn-home`:
+            home();
+            break;
+        case `btn-projects`:
+            projects(GetProjects);
+            break;
+        default:
+            break;
+    }
+}))
 
 function clearDOM() {
     while (container.firstChild) {
@@ -9,7 +24,20 @@ function clearDOM() {
     }
 }
 
-export const projects = (projects_array) => {
+export const home = () => {
+    if (!document.querySelector(`main`)) {
+        console.error(`Can't Find "main" Container`);
+    } else {
+        clearDOM();
+
+        let content = document.createElement(`h1`);
+        content.textContent = `Welcome to todo.`;
+
+        container.appendChild(content);
+    }
+};
+
+export const projects = () => {
     if (!document.querySelector(`main`)) {
         console.error(`Can't Find "main" Container`);
     } else {
@@ -43,10 +71,10 @@ export const projects = (projects_array) => {
         container.appendChild(content.header.container);
 
         //generate projects list and append to main container
-        if (!projects_array) {
+        if (!GetProjects) {
             console.warn(`Projects Array is Null`);
         } else {
-            for (let x = 0; x < projects_array.length; x++) {
+            for (let x = 0; x < GetProjects.length; x++) {
                 const project = {
                     container: document.createElement(`div`),
                     title: {
@@ -59,7 +87,7 @@ export const projects = (projects_array) => {
                 project.container.classList.add(`project`);
                 project.title.container.classList.add(`p_title`);
                 project.title.text.classList.add(`f_orange`);
-                project.title.text.textContent = projects_array[x].title;
+                project.title.text.textContent = GetProjects[x].title;
                 project.title.dropdownIcon.src = dropdownIcon;
                 project.title.dropdownIcon.classList.add(`svg-arrow`);
 
@@ -67,8 +95,8 @@ export const projects = (projects_array) => {
                 project.title.container.appendChild(project.title.dropdownIcon);
                 project.container.appendChild(project.title.container);
 
-                for (let y = 0; y < projects_array[x].GetTasks().length; y++) {
-                    let taskList = projects_array[x].GetTasks();
+                for (let y = 0; y < GetProjects[x].GetTasks().length; y++) {
+                    let taskList = GetProjects[x].GetTasks();
                     project.task = {
                         container: document.createElement(`div`),
                         checkbox: document.createElement(`input`),

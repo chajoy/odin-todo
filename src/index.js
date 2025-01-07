@@ -31,6 +31,8 @@ const Projects = (() => {
     }
 })();
 
+export const GetProjects = Projects.GetProjects();
+
 function Project(title) {
     const tasks = [];
 
@@ -77,6 +79,6 @@ export function addProject() {
     build.projects(Projects.GetProjects());
 }
 
-build.projects();
+build.home();
 
 
