@@ -139,6 +139,10 @@ main {
     padding: 20px;
 }
 
+.project.active img {
+    transform: rotate(180deg);
+}
+
 .p_title {
     display: grid;
     grid-template-columns: 1fr auto;
