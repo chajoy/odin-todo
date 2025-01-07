@@ -1,9 +1,5 @@
 import "./styles.css";
-import * as buildPage from "./pages";
-
-document.querySelector(`#btn-addProj`).addEventListener(`click`, () => {
-    buildPage.projects();
-})
+import * as build from "./pages";
 
 const Projects = (() => {
     const projects = [];
@@ -37,7 +33,6 @@ const Projects = (() => {
 
 function Project(title) {
     const tasks = [];
-    const container = createProject(title);
 
     const GetTasks = () => tasks.length > 0 ? tasks : `[Project: ${title}] Task List Empty`;
     const GetTask = (input) => tasks.length > 0 ? tasks[input] : `[Project: ${title}] Task List Empty`;
@@ -69,7 +64,19 @@ function Task(title, desc, dueDate, prio) {
     }
 }
 
-function addProject() {
+export function addProject() {
     let title = prompt("Enter Project Title");
+    let task = {
+        title: prompt("Enter Task Title"),
+        desc: prompt("Enter Task Description"),
+    }
+
     Projects.Add(title);
+    Projects.GetProject(title).AddTask(task.title, task.desc, 'today', 'high');
+
+    build.projects(Projects.GetProjects());
 }
+
+build.projects();
+
+
