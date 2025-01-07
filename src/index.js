@@ -85,7 +85,6 @@ export function addProject() {
 }
 
 build.home();
-
 Projects.Add('project 1');
 Projects.GetProject('project 1').AddTask('task 1', 'this is the description for task 1', 'today', 'high');
 

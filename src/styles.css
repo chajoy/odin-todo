@@ -21,6 +21,7 @@ body {
     background-color: #ffffff;
     display: grid;
     grid-template-columns: 1fr auto;
+    overflow-y: scroll;
 }
 
 img,
@@ -111,16 +112,13 @@ h6 {
 main {
     padding: 50px;
     margin-left: 300px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
 }
 
 .page-title {
     display: grid;
     grid-template-columns: 1fr auto;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
 }
 
 .page-title img:hover {
@@ -134,26 +132,39 @@ main {
 .project {
     display: flex;
     flex-direction: column;
+}
+
+.box {
     background-color: #f5f6f8;
     border-radius: 10px;
     padding: 20px;
+    margin: 20px 0;
 }
 
 .project.active img {
     transform: rotate(180deg);
 }
 
-.p_title {
-    display: grid;
-    grid-template-columns: 1fr auto;
+.project_title {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
 }
 
-.p_title img {
+.project_title h2 {
+    transition: filter .5s;
+}
+
+.project_title h2:hover {
+    cursor: pointer;
+    filter: brightness(1.2);
+}
+
+.project_title img {
     transition: transform .2s ease-in-out;
 }
 
-.p_title img:hover {
+.project_title img:hover {
     cursor: pointer;
     transform: scale(1.1);
 }
@@ -168,7 +179,7 @@ main {
     width: 25px;
 }
 
-.p_task {
+.project_task {
     display: flex;
     gap: 20px;
     margin: 20px 0;
