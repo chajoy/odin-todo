@@ -93,6 +93,8 @@ export const projects = () => {
 
                 project.title.container.appendChild(project.title.text);
                 project.title.container.appendChild(project.title.dropdownIcon);
+
+
                 project.container.appendChild(project.title.container);
 
                 for (let y = 0; y < GetProjects[x].GetTasks().length; y++) {
@@ -108,6 +110,7 @@ export const projects = () => {
                     }
 
                     project.task.container.classList.add(`p_task`);
+                    project.task.container.style.display = `none`;
                     project.task.checkbox.setAttribute(`type`, `checkbox`);
                     project.task.description.title.textContent = taskList[y].title;
                     project.task.description.text.textContent = taskList[y].desc;
@@ -119,6 +122,17 @@ export const projects = () => {
                     project.task.container.appendChild(project.task.description.container);
                     project.container.appendChild(project.task.container);
                 }
+
+                project.title.dropdownIcon.addEventListener(`click`, () => {
+                    project.container.classList.toggle(`active`);
+                    project.container.querySelectorAll(`.p_task`).forEach((e) => {
+                        if (project.container.classList.contains(`active`)) {
+                            e.style.display = `flex`;
+                        } else {
+                            e.style.display = `none`;
+                        }
+                    })
+                })
 
                 container.appendChild(project.container);
 
