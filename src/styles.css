@@ -16,7 +16,7 @@ body {
     height: 100vh;
     background-color: #ffffff;
     display: grid;
-    grid-template-columns: 300px 1fr;
+    grid-template-columns: 1fr auto;
 }
 
 img,
@@ -71,11 +71,17 @@ h6 {
 }
 
 .sidebar {
+    position: fixed;
     height: 100%;
+    width: 300px;
     background: #f5f6f8;
     padding: 50px;
     display: grid;
     grid-template-rows: repeat(3, 50px) 1fr;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    overflow-x: hidden;
     gap: 20px;
 }
 
@@ -100,6 +106,7 @@ h6 {
 
 main {
     padding: 50px;
+    margin-left: 300px;
     display: flex;
     flex-direction: column;
     gap: 20px;
