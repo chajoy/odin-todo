@@ -31,7 +31,7 @@ export const home = () => {
         clearDOM();
 
         let content = document.createElement(`h1`);
-        content.textContent = `Welcome to todo.`;
+        content.textContent = `what's next on your todo. list?`;
 
         container.appendChild(content);
     }

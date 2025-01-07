@@ -73,12 +73,51 @@ export function addProject() {
         desc: prompt("Enter Task Description"),
     }
 
-    Projects.Add(title);
-    Projects.GetProject(title).AddTask(task.title, task.desc, 'today', 'high');
+    if (!title || !task) {
 
-    build.projects(Projects.GetProjects());
+    } else {
+        Projects.Add(title);
+        Projects.GetProject(title).AddTask(task.title, task.desc, 'today', 'high');
+
+        build.projects(Projects.GetProjects());
+    }
+
 }
 
 build.home();
 
+Projects.Add('project 1');
+Projects.GetProject('project 1').AddTask('task 1', 'this is the description for task 1', 'today', 'high');
 
+Projects.Add('project 2');
+Projects.GetProject('project 2').AddTask('task 2', 'this is the description for task 2', 'tomorrow', 'medium');
+
+Projects.Add('project 3');
+Projects.GetProject('project 3').AddTask('task 3', 'this is the description for task 3', 'next week', 'low');
+Projects.GetProject('project 3').AddTask('task 3', 'this is the description for task 3', 'next week', 'low');
+Projects.GetProject('project 3').AddTask('task 3', 'this is the description for task 3', 'next week', 'low');
+
+Projects.Add('project 4');
+Projects.GetProject('project 4').AddTask('task 4', 'this is the description for task 4', 'today', 'high');
+
+Projects.Add('project 5');
+Projects.GetProject('project 5').AddTask('task 5', 'this is the description for task 5', 'next week', 'medium');
+
+Projects.Add('project 6');
+Projects.GetProject('project 6').AddTask('task 6', 'this is the description for task 6', 'tomorrow', 'low');
+Projects.GetProject('project 6').AddTask('task 6', 'this is the description for task 6', 'tomorrow', 'low');
+
+Projects.Add('project 7');
+Projects.GetProject('project 7').AddTask('task 7', 'this is the description for task 7', 'today', 'high');
+
+Projects.Add('project 8');
+Projects.GetProject('project 8').AddTask('task 8', 'this is the description for task 8', 'next month', 'medium');
+Projects.GetProject('project 8').AddTask('task 8', 'this is the description for task 8', 'next month', 'medium');
+Projects.GetProject('project 8').AddTask('task 8', 'this is the description for task 8', 'next month', 'medium');
+Projects.GetProject('project 8').AddTask('task 8', 'this is the description for task 8', 'next month', 'medium');
+
+Projects.Add('project 9');
+Projects.GetProject('project 9').AddTask('task 9', 'this is the description for task 9', 'tomorrow', 'low');
+
+Projects.Add('project 10');
+Projects.GetProject('project 10').AddTask('task 10', 'this is the description for task 10', 'next week', 'high');
