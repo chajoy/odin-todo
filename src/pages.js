@@ -90,7 +90,7 @@ export const projects = () => {
                 project.title.text.classList.add(`f_orange`);
                 project.title.text.textContent = `${GetProjects[x].title} (${GetProjects[x].GetTasks().length})`;
 
-                project.title.text.addEventListener(`click`, () => {
+                project.title.text.addEventListener(`click`, (event) => {
                     projectPage(GetProjects[x]);
                 })
                 project.title.dropdownIcon.src = dropdownIcon;
@@ -130,7 +130,8 @@ export const projects = () => {
                     content.body.appendChild(project.container);
                 }
 
-                project.title.dropdownIcon.addEventListener(`click`, () => {
+                project.title.dropdownIcon.addEventListener(`click`, (event) => {
+                    event.stopPropagation();
                     project.container.classList.toggle(`active`);
                     project.container.querySelectorAll(`.project_task`).forEach((e) => {
                         if (project.container.classList.contains(`active`)) {
@@ -139,6 +140,10 @@ export const projects = () => {
                             e.style.display = `none`;
                         }
                     })
+                })
+
+                project.container.addEventListener(`click`, () => {
+                    projectPage(GetProjects[x]);
                 })
 
                 content.body.appendChild(project.container);
