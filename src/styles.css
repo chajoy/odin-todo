@@ -136,6 +136,13 @@ main {
     flex-direction: column;
 }
 
+.task {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 10px;
+}
+
 .box {
     background-color: #f5f6f8;
     border-radius: 10px;
@@ -169,12 +176,12 @@ main {
     transform: scale(1.1);
 }
 
-.svg-arrow {
+.svg-large {
     height: 50px;
     width: 50px;
 }
 
-.svg-plus {
+.svg-mid {
     height: 25px;
     width: 25px;
 }

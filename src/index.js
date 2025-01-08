@@ -36,13 +36,12 @@ export const GetProjects = Projects.GetProjects();
 function Project(title) {
     const tasks = [];
 
-    const GetTasks = () => tasks.length > 0 ? tasks : `[Project: ${title}] Task List Empty`;
+    const GetTasks = () => tasks;
     const GetTask = (input) => tasks.length > 0 ? tasks[input] : `[Project: ${title}] Task List Empty`;
     const AddTask = (title, desc, dueDate, prio) => tasks.push(Task(title, desc, dueDate, prio));
     const RemoveTask = (input) => {
-        let toRemove = tasks.findIndex(e => e.GetTitle() === input.toLowerCase());
-        if (toRemove >= 0) {
-            tasks.splice(toRemove, 1);
+        if (input >= 0) {
+            tasks.splice(input, 1);
         } else {
             console.log(`Task Does Not Exist`);
         }

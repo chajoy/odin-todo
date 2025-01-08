@@ -1,5 +1,6 @@
 import plusIcon from "./img/plus-circle-fill.svg";
 import dropdownIcon from "./img/arrow-down-short.svg";
+import deleteIcon from "./img/trash-fill.svg";
 import { addProject } from "./index";
 import { GetProjects } from "./index";
 
@@ -58,7 +59,7 @@ export const projects = () => {
         content.header.title.textContent = `projects.`;
         content.header.icon.src = plusIcon;
 
-        content.header.icon.classList.add(`svg-plus`);
+        content.header.icon.classList.add(`svg-mid`);
         content.header.icon.addEventListener(`click`, () => {
             addProject();
         })
@@ -94,7 +95,7 @@ export const projects = () => {
                     projectPage(GetProjects[x]);
                 })
                 project.title.dropdownIcon.src = dropdownIcon;
-                project.title.dropdownIcon.classList.add(`svg-arrow`);
+                project.title.dropdownIcon.classList.add(`svg-large`);
 
                 project.title.container.appendChild(project.title.text);
                 project.title.container.appendChild(project.title.dropdownIcon);
@@ -166,21 +167,44 @@ const projectPage = (project) => {
     content.title.textContent = project.title;
     content.title.classList.add(`page-title`);
 
-    for (let x = 0; x < project.GetTasks().length; x++) {
-        let task = {
-            container: document.createElement(`div`),
-            title: document.createElement(`h2`),
-            desc: document.createElement(`p`),
+    if (project.GetTasks().length === 0) {
+        let text = document.createElement(`p`);
+        text.textContent = `Can't see any todos, Create some tasks to get started`;
+        content.body.appendChild(text);
+    } else {
+        for (let x = 0; x < project.GetTasks().length; x++) {
+            let task = {
+                container: document.createElement(`div`),
+                text: {
+                    container: document.createElement(`div`),
+                    title: document.createElement(`h2`),
+                    desc: document.createElement(`p`),
+                },
+                btn_delete: document.createElement(`img`),
+            }
+
+            task.text.title.textContent = project.GetTasks()[x].title;
+            task.text.desc.textContent = project.GetTasks()[x].desc;
+
+            task.btn_delete.src = deleteIcon;
+            task.btn_delete.classList.add(`svg-mid`);
+
+            task.btn_delete.addEventListener(`click`, (event) => {
+                event.stopPropagation();
+                project.RemoveTask(x);
+                projectPage(project);
+            })
+
+            task.text.container.appendChild(task.text.title);
+            task.text.container.appendChild(task.text.desc);
+
+            task.container.appendChild(task.text.container);
+            task.container.appendChild(task.btn_delete);
+            task.container.classList.add(`box`);
+            task.container.classList.add(`task`);
+
+            content.body.appendChild(task.container);
         }
-
-        task.title.textContent = project.GetTasks()[x].title;
-        task.desc.textContent = project.GetTasks()[x].desc;
-
-        task.container.appendChild(task.title);
-        task.container.appendChild(task.desc);
-        task.container.classList.add(`box`);
-
-        content.body.appendChild(task.container);
     }
 
     container.appendChild(content.title);
