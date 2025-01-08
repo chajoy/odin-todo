@@ -3,7 +3,7 @@ import dropdownIcon from "./img/arrow-down-short.svg";
 import deleteIcon from "./img/trash-fill.svg";
 import editIcon from "./img/pencil-fill.svg";
 import { addProject } from "./index";
-import { GetProjects } from "./index";
+import { Projects } from "./index";
 
 const container = document.querySelector(`main`);
 
@@ -54,7 +54,7 @@ export const modal = (() => {
 
         form.container.addEventListener(`input`, () => {
             form.input.setCustomValidity(``);
-            if (GetProjects.find((e) => e.title.toLowerCase() === form.input.value.toLowerCase())) {
+            if (Projects.GetProjects().find((e) => e.title.toLowerCase() === form.input.value.toLowerCase())) {
                 form.input.setCustomValidity(` `);
                 return;
             }
@@ -115,7 +115,7 @@ document.querySelectorAll(`.sidebar div`).forEach((e) => e.addEventListener(`cli
             home();
             break;
         case `btn-projects`:
-            projects(GetProjects);
+            projects(Projects.GetProjects());
             break;
         default:
             break;
@@ -177,10 +177,10 @@ export const projects = () => {
         content.body.classList.add(`page-body`);
 
         //generate projects list and append to main container
-        if (!GetProjects) {
+        if (!Projects.GetProjects()) {
             console.warn(`Projects Array is Null`);
         } else {
-            for (let x = 0; x < GetProjects.length; x++) {
+            for (let x = 0; x < Projects.GetProjects().length; x++) {
                 const project = {
                     container: document.createElement(`div`),
                     title: {
@@ -194,10 +194,10 @@ export const projects = () => {
                 project.container.classList.add(`box`);
                 project.title.container.classList.add(`project_title`);
                 project.title.text.classList.add(`f_orange`);
-                project.title.text.textContent = `${GetProjects[x].title} (${GetProjects[x].GetTasks().length})`;
+                project.title.text.textContent = `${Projects.GetProjects()[x].title} (${Projects.GetProjects()[x].GetTasks().length})`;
 
                 project.title.text.addEventListener(`click`, (event) => {
-                    projectPage(GetProjects[x]);
+                    projectPage(Projects.GetProjects()[x]);
                 })
                 project.title.dropdownIcon.src = dropdownIcon;
                 project.title.dropdownIcon.classList.add(`svg-large`);
@@ -209,8 +209,8 @@ export const projects = () => {
 
                 project.container.appendChild(project.title.container);
 
-                for (let y = 0; y < GetProjects[x].GetTasks().length; y++) {
-                    let taskList = GetProjects[x].GetTasks();
+                for (let y = 0; y < Projects.GetProjects()[x].GetTasks().length; y++) {
+                    let taskList = Projects.GetProjects()[x].GetTasks();
                     project.task = {
                         container: document.createElement(`div`),
                         checkbox: document.createElement(`input`),
@@ -255,7 +255,7 @@ export const projects = () => {
                 })
 
                 project.container.addEventListener(`click`, () => {
-                    projectPage(GetProjects[x]);
+                    projectPage(Projects.GetProjects()[x]);
                 })
 
                 content.body.appendChild(project.container);
@@ -289,6 +289,10 @@ const projectPage = (project) => {
 
     content.header.deleteIcon.src = deleteIcon;
     content.header.deleteIcon.classList.add(`svg-mid`);
+    content.header.deleteIcon.addEventListener(`click`, () => {
+        Projects.Remove(project.title);
+        projects();
+    })
 
     content.header.container.append(
         content.header.title,
