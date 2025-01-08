@@ -54,7 +54,7 @@ export const modal = (() => {
 
         form.container.addEventListener(`input`, () => {
             form.input.setCustomValidity(``);
-            if (Projects.GetProjects().find((e) => e.title.toLowerCase() === form.input.value.toLowerCase())) {
+            if (Projects.GetProjects().find((e) => e.title.toLowerCase() === form.input.value.toLowerCase()) && project.title.toLowerCase() != form.input.value.toLowerCase()) {
                 form.input.setCustomValidity(` `);
                 return;
             }
@@ -280,6 +280,7 @@ const projectPage = (project) => {
     }
 
     content.header.title.textContent = project.title;
+    content.header.title.classList.add(`f_orange`);
 
     content.header.editIcon.src = editIcon;
     content.header.editIcon.classList.add(`svg-mid`);
