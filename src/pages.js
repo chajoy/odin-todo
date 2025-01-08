@@ -6,6 +6,44 @@ import { GetProjects } from "./index";
 
 const container = document.querySelector(`main`);
 
+export const modal = (() => {
+    const container = document.getElementById(`modal-container`);
+    const input = document.querySelector(`#modal-container input`);
+    const submit = document.getElementById(`btn-submit`);
+    const back = document.getElementById(`btn-back`);
+    const form = document.querySelector(`#modal-container form`);
+
+    form.addEventListener(`submit`, (e) => {
+        e.preventDefault();
+        if (!input.value) {
+        } else {
+            addProject(input.value);
+            Close();
+            projects();
+
+        }
+    })
+
+    back.addEventListener(`click`, () => {
+        Close();
+    })
+
+    const Open = () => {
+        container.style.display = `block`;
+        input.value = ``;
+        input.focus();
+    }
+
+    const Close = () => {
+        container.style.display = `none`;
+    }
+
+    return {
+        Open,
+        Close,
+    }
+})();
+
 document.querySelectorAll(`.sidebar div`).forEach((e) => e.addEventListener(`click`, () => {
     switch (e.getAttribute(`id`)) {
         case `btn-home`:
@@ -61,7 +99,7 @@ export const projects = () => {
 
         content.header.icon.classList.add(`svg-mid`);
         content.header.icon.addEventListener(`click`, () => {
-            addProject();
+            modal.Open();
         })
 
         content.header.container.appendChild(content.header.title);
@@ -210,3 +248,4 @@ const projectPage = (project) => {
     container.appendChild(content.title);
     container.appendChild(content.body);
 }
+

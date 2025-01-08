@@ -1,5 +1,5 @@
 import "./styles.css";
-import * as build from "./pages";
+import { home as build_home, projects as build_projects } from "./pages";
 
 const Projects = (() => {
     const projects = [];
@@ -65,25 +65,11 @@ function Task(title, desc, dueDate, prio) {
     }
 }
 
-export function addProject() {
-    let title = prompt("Enter Project Title");
-    let task = {
-        title: prompt("Enter Task Title"),
-        desc: prompt("Enter Task Description"),
-    }
-
-    if (!title || !task) {
-
-    } else {
-        Projects.Add(title);
-        Projects.GetProject(title).AddTask(task.title, task.desc, 'today', 'high');
-
-        build.projects(Projects.GetProjects());
-    }
-
+export function addProject(value) {
+    Projects.Add(value);
 }
 
-build.home();
+build_home();
 Projects.Add('Website Redesign');
 Projects.GetProject('Website Redesign').AddTask('Create wireframes for the homepage', 'Design the initial wireframes for the homepage, including the header, footer, and main content sections.', 'today', 'high');
 
