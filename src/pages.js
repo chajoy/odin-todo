@@ -35,6 +35,7 @@ export const modal = (() => {
 
         form.btn_back.classList.add(`button`);
         form.btn_back.setAttribute(`id`, `btn-back`);
+        form.btn_back.setAttribute(`type`, `button`);
         form.btn_back.textContent = `back`;
 
         form.btn_submit.classList.add(`button`);
@@ -49,6 +50,15 @@ export const modal = (() => {
 
         form.btn_back.addEventListener(`click`, () => {
             Close();
+        })
+
+        form.container.addEventListener(`input`, () => {
+            form.input.setCustomValidity(``);
+            if (GetProjects.find((e) => e.title.toLowerCase() === form.input.value.toLowerCase())) {
+                form.input.setCustomValidity(` `);
+                return;
+            }
+            form.input.reportValidity();
         })
 
         form.container.addEventListener(`submit`, (e) => {
@@ -96,7 +106,6 @@ export const modal = (() => {
     return {
         Open,
         Close,
-        focus,
     }
 })();
 
@@ -275,7 +284,6 @@ const projectPage = (project) => {
     content.header.editIcon.src = editIcon;
     content.header.editIcon.classList.add(`svg-mid`);
     content.header.editIcon.addEventListener(`click`, () => {
-        console.log(project);
         modal.Open(`edit-proj`, project);
     })
 
