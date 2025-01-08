@@ -2,7 +2,6 @@ import plusIcon from "./img/plus-circle-fill.svg";
 import dropdownIcon from "./img/arrow-down-short.svg";
 import deleteIcon from "./img/trash-fill.svg";
 import editIcon from "./img/pencil-fill.svg";
-import { addProject } from "./index";
 import { Projects } from "./index";
 
 const container = document.querySelector(`main`);
@@ -25,6 +24,8 @@ export const modal = (() => {
             btn_back: document.createElement(`button`),
             btn_submit: document.createElement(`button`),
         }
+
+        form.container.classList.add(`proj`);
 
         form.input.setAttribute(`input`, `text`);
         form.input.setAttribute(`placeholder`, `project title`);
@@ -68,7 +69,7 @@ export const modal = (() => {
                 Close();
                 projectPage(project);
             } else {
-                addProject(form.input.value);
+                Projects.Add(form.input.value);
                 Close();
                 projects();
             }
@@ -77,6 +78,80 @@ export const modal = (() => {
         content.appendChild(form.container);
 
         return form.input;
+    }
+
+    const form_task = (type, project) => {
+        while (content.firstChild) {
+            content.removeChild(content.firstChild);
+        }
+        const form = {
+            container: document.createElement(`form`),
+            input: {
+                title: document.createElement(`input`),
+                desc: document.createElement(`textarea`),
+            },
+            btn_back: document.createElement(`button`),
+            btn_submit: document.createElement(`button`),
+        }
+
+        form.container.classList.add(`task`);
+
+        form.input.title.setAttribute(`input`, `text`);
+        form.input.title.setAttribute(`placeholder`, `task title`);
+        form.input.title.required = true;
+
+        form.input.desc.setAttribute(`input`, `textarea`);
+        form.input.desc.setAttribute(`placeholder`, `task description`);
+        form.input.desc.required = true;
+
+        // if (type === `edit`) {
+        //     form.input.value = project.title;
+        // }
+
+        form.btn_back.classList.add(`button`);
+        form.btn_back.setAttribute(`id`, `btn-back`);
+        form.btn_back.setAttribute(`type`, `button`);
+        form.btn_back.textContent = `back`;
+
+        form.btn_submit.classList.add(`button`);
+        form.btn_submit.setAttribute(`type`, `submit`);
+        form.btn_submit.textContent = type;
+
+        form.container.append(
+            form.input.title,
+            form.input.desc,
+            form.btn_back,
+            form.btn_submit,
+        );
+
+        form.btn_back.addEventListener(`click`, () => {
+            Close();
+        })
+
+        // form.container.addEventListener(`input`, () => {
+        //     form.input.setCustomValidity(``);
+        //     if (Projects.GetProjects().find((e) => e.title.toLowerCase() === form.input.value.toLowerCase()) && project.title.toLowerCase() != form.input.value.toLowerCase()) {
+        //         form.input.setCustomValidity(` `);
+        //         return;
+        //     }
+        //     form.input.reportValidity();
+        // })
+
+        form.container.addEventListener(`submit`, (e) => {
+            e.preventDefault();
+            if (type === `edit`) {
+
+            } else {
+                console.log();
+                project.AddTask(form.input.title.value, form.input.desc.value, `test`, `test`);
+            }
+            Close();
+            projectPage(project);
+        })
+
+        content.appendChild(form.container);
+
+        return form.input.title;
     }
 
     const Open = (type, project) => {
@@ -89,7 +164,7 @@ export const modal = (() => {
                 form = form_proj(`edit`, project);
                 break;
             case `create-task`:
-                form = form_task(`create`);
+                form = form_task(`create`, project);
                 break;
             case `edit-task`:
                 form = form_task(`edit`, project);
@@ -275,6 +350,7 @@ const projectPage = (project) => {
             title: document.createElement(`h1`),
             editIcon: document.createElement(`img`),
             deleteIcon: document.createElement(`img`),
+            addIcon: document.createElement(`img`),
         },
         body: document.createElement(`div`),
     }
@@ -295,8 +371,15 @@ const projectPage = (project) => {
         projects();
     })
 
+    content.header.addIcon.src = plusIcon;
+    content.header.addIcon.classList.add(`svg-mid`);
+    content.header.addIcon.addEventListener(`click`, () => {
+        modal.Open(`create-task`, project);
+    })
+
     content.header.container.append(
         content.header.title,
+        content.header.addIcon,
         content.header.editIcon,
         content.header.deleteIcon,
     )

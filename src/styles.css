@@ -214,15 +214,12 @@ main {
     background-color: rgba(0, 0, 0, 0.4);
 }
 
-.modal-content {
-    background-color: white;
+.modal-content form {
     padding: 20px;
     border-radius: 10px;
     width: 50%;
     margin: 15% auto;
-}
-
-.modal-content form {
+    background-color: white;
     display: grid;
     gap: 20px;
     grid-template-columns: 1fr 1fr;
@@ -230,26 +227,42 @@ main {
     min-height: 12%;
 }
 
+.modal-content input,
+.modal-content textarea {
+    grid-column: span 2;
+    background-color: var(--grey);
+    padding: 30px;
+    border: none;
+    border-bottom: 3px solid rgba(0, 0, 0, 0);
+    border-radius: 10px 10px 0 0;
+}
+
 .modal-content input {
     font-size: 1.5rem;
     font-weight: bold;
-    color: var(--orange);
-    background: var(--grey);
-    border-radius: 10px 10px 0 0;
-    grid-column: span 2;
-    border: none;
-    border-bottom: 3px solid rgba(0, 0, 0, 0);
-    padding: 30px;
 }
 
-.modal-content input:focus {
+.modal-content .proj input {
+    color: var(--orange);
+}
+
+.modal-content .task textarea {
+    margin: none;
+    resize: none;
+    min-height: 200px;
+}
+
+.modal-content input:focus,
+.modal-content textarea:focus {
     outline: none;
 }
 
-.modal-content input:invalid {
+.modal-content input:invalid,
+.modal-content textarea:invalid {
     border-bottom-color: rgb(244, 87, 87);
 }
 
-.modal-content input:valid {
+.modal-content input:valid,
+.modal-content textarea:valid {
     border-bottom-color: rgb(76, 208, 76);
 }

@@ -67,11 +67,7 @@ function Task(title, desc, dueDate, prio) {
     }
 }
 
-export function addProject(value) {
-    Projects.Add(value);
-}
-
-build_home();
-
 //remove this when not using temp_data.js
 generateTempData();
+
+build_projects();
