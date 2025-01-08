@@ -15,6 +15,7 @@
 }
 
 body {
+    user-select: none;
     -webkit-font-smoothing: antialiased;
     font-family: "Outfit", sans-serif;
     background-color: black;
@@ -121,18 +122,22 @@ main {
     margin-left: 300px;
 }
 
-.page-title {
-    display: grid;
-    grid-template-columns: 1fr auto;
+.page-header {
+    display: flex;
     align-items: center;
     margin-bottom: 40px;
+    gap: 20px;
 }
 
-.page-title img:hover {
+.page-header :first-child {
+    margin-right: auto;
+}
+
+.page-header img:hover {
     cursor: pointer;
 }
 
-.page-title img:active {
+.page-header img:active {
     transform: scale(1.1);
 }
 

@@ -102,4 +102,3 @@ Projects.GetProject('Product Feature Release').AddTask('Coordinate beta testing'
 
 Projects.Add('CRM System Update');
 Projects.GetProject('CRM System Update').AddTask('Upgrade CRM software', 'Install the latest version of the CRM software and ensure all integrations are working properly.', 'next week', 'high');
-

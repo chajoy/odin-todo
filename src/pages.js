@@ -1,6 +1,7 @@
 import plusIcon from "./img/plus-circle-fill.svg";
 import dropdownIcon from "./img/arrow-down-short.svg";
 import deleteIcon from "./img/trash-fill.svg";
+import editIcon from "./img/pencil-fill.svg";
 import { addProject } from "./index";
 import { GetProjects } from "./index";
 
@@ -8,30 +9,84 @@ const container = document.querySelector(`main`);
 
 export const modal = (() => {
     const container = document.getElementById(`modal-container`);
+    const content = document.getElementById(`modal-content`);
     const input = document.querySelector(`#modal-container input`);
     const submit = document.getElementById(`btn-submit`);
     const back = document.getElementById(`btn-back`);
     const form = document.querySelector(`#modal-container form`);
 
-    form.addEventListener(`submit`, (e) => {
-        e.preventDefault();
-        if (!input.value) {
-        } else {
-            addProject(input.value);
-            Close();
-            projects();
-
+    const form_proj = (type, project) => {
+        while (content.firstChild) {
+            content.removeChild(content.firstChild);
         }
-    })
+        const form = {
+            container: document.createElement(`form`),
+            input: document.createElement(`input`),
+            btn_back: document.createElement(`button`),
+            btn_submit: document.createElement(`button`),
+        }
 
-    back.addEventListener(`click`, () => {
-        Close();
-    })
+        form.input.setAttribute(`input`, `text`);
+        form.input.setAttribute(`placeholder`, `project title`);
+        form.input.required = true;
+        if (type === `edit`) {
+            form.input.value = project.title;
+        }
 
-    const Open = () => {
+        form.btn_back.classList.add(`button`);
+        form.btn_back.setAttribute(`id`, `btn-back`);
+        form.btn_back.textContent = `back`;
+
+        form.btn_submit.classList.add(`button`);
+        form.btn_submit.setAttribute(`type`, `submit`);
+        form.btn_submit.textContent = type;
+
+        form.container.append(
+            form.input,
+            form.btn_back,
+            form.btn_submit,
+        );
+
+        form.btn_back.addEventListener(`click`, () => {
+            Close();
+        })
+
+        form.container.addEventListener(`submit`, (e) => {
+            e.preventDefault();
+            if (type === `edit`) {
+                project.title = form.input.value;
+                Close();
+                projectPage(project);
+            } else {
+                addProject(form.input.value);
+                Close();
+                projects();
+            }
+        })
+
+        content.appendChild(form.container);
+
+        return form.input;
+    }
+
+    const Open = (type, project) => {
+        let form;
+        switch (type) {
+            case `create-proj`:
+                form = form_proj(`create`);
+                break;
+            case `edit-proj`:
+                form = form_proj(`edit`, project);
+                break;
+            case `create-task`:
+                form = form_task(`create`);
+                break;
+            case `edit-task`:
+                form = form_task(`edit`, project);
+                break;
+        }
         container.style.display = `block`;
-        input.value = ``;
-        input.focus();
+        form.focus();
     }
 
     const Close = () => {
@@ -41,6 +96,7 @@ export const modal = (() => {
     return {
         Open,
         Close,
+        focus,
     }
 })();
 
@@ -92,18 +148,20 @@ export const projects = () => {
         }
 
         //generate header and append to main container
-        content.header.container.classList.add(`page-title`);
+        content.header.container.classList.add(`page-header`);
 
         content.header.title.textContent = `projects.`;
         content.header.icon.src = plusIcon;
 
         content.header.icon.classList.add(`svg-mid`);
         content.header.icon.addEventListener(`click`, () => {
-            modal.Open();
+            modal.Open(`create-proj`);
         })
 
-        content.header.container.appendChild(content.header.title);
-        content.header.container.appendChild(content.header.icon);
+        content.header.container.append(
+            content.header.title,
+            content.header.icon,
+        );
 
         container.appendChild(content.header.container);
 
@@ -135,9 +193,10 @@ export const projects = () => {
                 project.title.dropdownIcon.src = dropdownIcon;
                 project.title.dropdownIcon.classList.add(`svg-large`);
 
-                project.title.container.appendChild(project.title.text);
-                project.title.container.appendChild(project.title.dropdownIcon);
-
+                project.title.container.append(
+                    project.title.text,
+                    project.title.dropdownIcon,
+                );
 
                 project.container.appendChild(project.title.container);
 
@@ -159,11 +218,16 @@ export const projects = () => {
                     project.task.description.title.textContent = taskList[y].title;
                     project.task.description.text.textContent = taskList[y].desc;
 
-                    project.task.description.container.appendChild(project.task.description.title);
-                    project.task.description.container.appendChild(project.task.description.text);
+                    project.task.description.container.append(
+                        project.task.description.title,
+                        project.task.description.text,
+                    );
 
-                    project.task.container.appendChild(project.task.checkbox);
-                    project.task.container.appendChild(project.task.description.container);
+                    project.task.container.append(
+                        project.task.checkbox,
+                        project.task.description.container,
+                    );
+
                     project.container.appendChild(project.task.container);
 
                     content.body.appendChild(project.container);
@@ -197,13 +261,35 @@ const projectPage = (project) => {
     clearDOM();
 
     let content = {
-        title: document.createElement(`h1`),
+        header: {
+            container: document.createElement(`div`),
+            title: document.createElement(`h1`),
+            editIcon: document.createElement(`img`),
+            deleteIcon: document.createElement(`img`),
+        },
         body: document.createElement(`div`),
     }
 
-    content.title = document.createElement(`h1`);
-    content.title.textContent = project.title;
-    content.title.classList.add(`page-title`);
+    content.header.title.textContent = project.title;
+
+    content.header.editIcon.src = editIcon;
+    content.header.editIcon.classList.add(`svg-mid`);
+    content.header.editIcon.addEventListener(`click`, () => {
+        console.log(project);
+        modal.Open(`edit-proj`, project);
+    })
+
+    content.header.deleteIcon.src = deleteIcon;
+    content.header.deleteIcon.classList.add(`svg-mid`);
+
+    content.header.container.append(
+        content.header.title,
+        content.header.editIcon,
+        content.header.deleteIcon,
+    )
+
+    content.header.container.classList.add(`page-header`);
+    content.body.classList.add(`page-body`);
 
     if (project.GetTasks().length === 0) {
         let text = document.createElement(`p`);
@@ -233,11 +319,16 @@ const projectPage = (project) => {
                 projectPage(project);
             })
 
-            task.text.container.appendChild(task.text.title);
-            task.text.container.appendChild(task.text.desc);
+            task.text.container.append(
+                task.text.title,
+                task.text.desc,
+            );
 
-            task.container.appendChild(task.text.container);
-            task.container.appendChild(task.btn_delete);
+            task.container.append(
+                task.text.container,
+                task.btn_delete,
+            );
+
             task.container.classList.add(`box`);
             task.container.classList.add(`task`);
 
@@ -245,7 +336,9 @@ const projectPage = (project) => {
         }
     }
 
-    container.appendChild(content.title);
-    container.appendChild(content.body);
+    container.append(
+        content.header.container,
+        content.body,
+    )
 }
 
