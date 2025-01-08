@@ -70,4 +70,4 @@ function Task(title, desc, dueDate, prio) {
 //remove this when not using temp_data.js
 generateTempData();
 
-build_projects();
+build_home();

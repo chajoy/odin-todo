@@ -80,7 +80,7 @@ export const modal = (() => {
         return form.input;
     }
 
-    const form_task = (type, project) => {
+    const form_task = (type, project, task) => {
         while (content.firstChild) {
             content.removeChild(content.firstChild);
         }
@@ -99,6 +99,11 @@ export const modal = (() => {
         form.input.title.setAttribute(`input`, `text`);
         form.input.title.setAttribute(`placeholder`, `task title`);
         form.input.title.required = true;
+
+        if (type === `edit`) {
+            form.input.title.value = task.title;
+            form.input.desc.value = task.desc;
+        }
 
         form.input.desc.setAttribute(`input`, `textarea`);
         form.input.desc.setAttribute(`placeholder`, `task description`);
@@ -140,9 +145,11 @@ export const modal = (() => {
         form.container.addEventListener(`submit`, (e) => {
             e.preventDefault();
             if (type === `edit`) {
-
+                task.title = form.input.title.value;
+                task.desc = form.input.desc.value;
+                Close();
+                projectPage(project);
             } else {
-                console.log();
                 project.AddTask(form.input.title.value, form.input.desc.value, `test`, `test`);
             }
             Close();
@@ -154,7 +161,7 @@ export const modal = (() => {
         return form.input.title;
     }
 
-    const Open = (type, project) => {
+    const Open = (type, project, task) => {
         let form;
         switch (type) {
             case `create-proj`:
@@ -167,7 +174,7 @@ export const modal = (() => {
                 form = form_task(`create`, project);
                 break;
             case `edit-task`:
-                form = form_task(`edit`, project);
+                form = form_task(`edit`, project, task);
                 break;
         }
         container.style.display = `block`;
@@ -421,6 +428,7 @@ const projectPage = (project) => {
                     desc: document.createElement(`p`),
                 },
                 btn_delete: document.createElement(`img`),
+                btn_edit: document.createElement(`img`),
             }
 
             task.text.title.textContent = project.GetTasks()[x].title;
@@ -429,10 +437,18 @@ const projectPage = (project) => {
             task.btn_delete.src = deleteIcon;
             task.btn_delete.classList.add(`svg-mid`);
 
+            task.btn_edit.src = editIcon;
+            task.btn_edit.classList.add(`svg-mid`);
+
             task.btn_delete.addEventListener(`click`, (event) => {
                 event.stopPropagation();
                 project.RemoveTask(x);
                 projectPage(project);
+            })
+
+            task.btn_edit.addEventListener(`click`, (e) => {
+                e.stopPropagation();
+                modal.Open(`edit-task`, project, project.GetTasks()[x]);
             })
 
             task.text.container.append(
@@ -442,6 +458,7 @@ const projectPage = (project) => {
 
             task.container.append(
                 task.text.container,
+                task.btn_edit,
                 task.btn_delete,
             );
 
