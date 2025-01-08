@@ -191,7 +191,7 @@ export const modal = (() => {
     }
 })();
 
-document.querySelectorAll(`.sidebar div`).forEach((e) => e.addEventListener(`click`, () => {
+document.querySelectorAll(`.sidebar button`).forEach((e) => e.addEventListener(`click`, () => {
     switch (e.getAttribute(`id`)) {
         case `btn-home`:
             home();

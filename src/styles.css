@@ -1,7 +1,19 @@
 :root {
-    --orange: rgb(228, 175, 99);
-    --grey: #f5f6f8;
-    --dark-grey: #d1d1d13c;
+    --primary: white;
+    --secondary: #f5f6f8;
+    --highlight: rgb(228, 175, 99);
+    --border: #dfdfdf;
+    --alternate: #eeeeee;
+    --font: black;
+}
+
+.dark {
+    --primary: #1e1e2f;
+    --secondary: #2a2a3b;
+    --highlight: rgb(228, 175, 99);
+    --border: #44475a;
+    --alternate: #33344a;
+    --font: #e4e4e4;
 }
 
 *,
@@ -18,10 +30,9 @@ body {
     user-select: none;
     -webkit-font-smoothing: antialiased;
     font-family: "Outfit", sans-serif;
-    background-color: black;
     min-height: 100vh;
     height: 100vh;
-    background-color: #ffffff;
+    background-color: var(--primary);
     display: grid;
     grid-template-columns: 1fr auto;
     overflow-y: scroll;
@@ -43,11 +54,6 @@ select {
     font: inherit;
 }
 
-button {
-    border: none;
-    background: none;
-}
-
 p,
 h1,
 h2,
@@ -55,6 +61,7 @@ h3,
 h4,
 h5,
 h6 {
+    color: var(--font);
     overflow-wrap: break-word;
 }
 
@@ -76,7 +83,7 @@ h6 {
 }
 
 .f_orange {
-    color: var(--orange)
+    color: var(--highlight)
 }
 
 .f_green {
@@ -87,40 +94,51 @@ h6 {
     position: fixed;
     height: 100%;
     width: 300px;
-    background: #f5f6f8;
+    background: var(--secondary);
     padding: 30px;
     z-index: 1;
     top: 0;
     left: 0;
     overflow-x: hidden;
-}
-
-.navButtons {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
+.button.btn_darkMode {
+    margin-top: auto;
+    background-color: #33344a;
+    color: white;
+    border-color: #44475a;
+}
+
+.dark .btn_darkMode {
+    margin-top: auto;
+    background-color: #eeeeee;
+    color: black;
+    border-color: #dfdfdf;
+}
+
 .title {
     font-size: 3rem;
-    margin-bottom: 50px;
 }
 
 .button {
     font-size: 1.2rem;
     font-weight: bold;
     padding: 20px;
-    background-color: var(--dark-grey);
+    background-color: var(--alternate);
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: left;
     transition: transform .5s;
-    border: 2px solid var(--dark-grey);
+    border: 2px solid var(--border);
+    color: var(--font);
 }
 
 .button:hover {
-    outline: 2px solid var(--orange);
+    border-color: var(--highlight);
     transform: scale(1.03);
     cursor: pointer;
 }
@@ -128,6 +146,10 @@ h6 {
 main {
     padding: 50px;
     margin-left: 300px;
+}
+
+.dark img {
+    filter: invert(1);
 }
 
 .page-header {
@@ -163,7 +185,7 @@ main {
 }
 
 .box {
-    background-color: var(--grey);
+    background-color: var(--secondary);
     border-radius: 10px;
     padding: 20px;
     margin: 20px 0;
@@ -171,7 +193,7 @@ main {
 }
 
 .box:hover {
-    outline: 2px solid var(--orange);
+    outline: 2px solid var(--highlight);
     transform: scale(1.03);
     cursor: pointer;
 }
@@ -233,7 +255,7 @@ main {
     padding: 20px;
     border-radius: 10px;
     min-width: 1000px;
-    background-color: white;
+    background-color: var(--primary);
     display: grid;
     gap: 20px;
     grid-template-columns: 1fr 1fr;
@@ -243,7 +265,7 @@ main {
 .modal-content input,
 .modal-content textarea {
     grid-column: span 2;
-    background-color: var(--grey);
+    background-color: var(--secondary);
     padding: 30px;
     border: none;
     border-bottom: 3px solid rgba(0, 0, 0, 0);
@@ -256,7 +278,7 @@ main {
 }
 
 .modal-content .proj input {
-    color: var(--orange);
+    color: var(--highlight);
 }
 
 .modal-content .task textarea {

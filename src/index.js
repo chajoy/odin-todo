@@ -3,6 +3,15 @@ import { home as build_home, projects as build_projects } from "./pages";
 //remove this when not using temp_data.js
 import { generateTempData } from "./temp_data";
 
+document.getElementById(`btn_darkMode`).addEventListener(`click`, (e) => {
+    document.body.classList.toggle(`dark`);
+    if (document.body.classList.contains(`dark`)) {
+        e.target.textContent = `light mode.`;
+    } else {
+        e.target.textContent = `dark mode.`;
+    }
+})
+
 export const Projects = (() => {
     const projects = [];
 
