@@ -177,7 +177,7 @@ export const modal = (() => {
                 form = form_task(`edit`, project, task);
                 break;
         }
-        container.style.display = `block`;
+        container.style.display = `flex`;
         form.focus();
     }
 
@@ -318,7 +318,6 @@ export const projects = () => {
                     let task = Projects.GetProjects()[x].GetTasks()[y];
                     project.task = {
                         container: document.createElement(`div`),
-                        checkbox: document.createElement(`input`),
                         description: {
                             container: document.createElement(`div`),
                             title: document.createElement(`h3`),
@@ -327,7 +326,6 @@ export const projects = () => {
                     }
 
                     project.task.container.classList.add(`project_task`);
-                    project.task.checkbox.setAttribute(`type`, `checkbox`);
                     project.task.description.title.textContent = task.title;
                     project.task.description.text.textContent = task.desc;
 
@@ -337,7 +335,6 @@ export const projects = () => {
                     );
 
                     project.task.container.append(
-                        project.task.checkbox,
                         project.task.description.container,
                     );
 
