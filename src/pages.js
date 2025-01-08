@@ -226,7 +226,8 @@ export const projects = () => {
             header: {
                 container: document.createElement(`div`),
                 title: document.createElement(`h1`),
-                icon: document.createElement(`img`),
+                dropdownIcon: document.createElement(`img`),
+                addIcon: document.createElement(`img`),
             },
             body: document.createElement(`div`),
         }
@@ -234,17 +235,38 @@ export const projects = () => {
         //generate header and append to main container
         content.header.container.classList.add(`page-header`);
 
-        content.header.title.textContent = `projects.`;
-        content.header.icon.src = plusIcon;
+        content.header.dropdownIcon.src = dropdownIcon;
+        content.header.dropdownIcon.classList.add(`svg-large`);
+        content.header.dropdownIcon.addEventListener(`click`, () => {
+            let projects = document.querySelectorAll(`.project`);
+            let active_projects = document.querySelectorAll(`.project.active`);
+            if (projects.length === active_projects.length) {
+                projects.forEach((e) => {
+                    let tasksContainer = e.querySelector(`.tasksContainer`);
+                    e.classList.remove(`active`);
+                    tasksContainer.style.display = `none`;
+                });
+            } else {
+                projects.forEach((e) => {
+                    let tasksContainer = e.querySelector(`.tasksContainer`);
+                    e.classList.add(`active`);
+                    tasksContainer.style.display = `flex`;
+                })
+            }
+        })
 
-        content.header.icon.classList.add(`svg-mid`);
-        content.header.icon.addEventListener(`click`, () => {
+        content.header.title.textContent = `projects.`;
+        content.header.addIcon.src = plusIcon;
+
+        content.header.addIcon.classList.add(`svg-mid`);
+        content.header.addIcon.addEventListener(`click`, () => {
             modal.Open(`create-proj`);
         })
 
         content.header.container.append(
             content.header.title,
-            content.header.icon,
+            content.header.dropdownIcon,
+            content.header.addIcon,
         );
 
         container.appendChild(content.header.container);
@@ -271,9 +293,6 @@ export const projects = () => {
                 project.title.text.classList.add(`f_orange`);
                 project.title.text.textContent = `${Projects.GetProjects()[x].title} (${Projects.GetProjects()[x].GetTasks().length})`;
 
-                project.title.text.addEventListener(`click`, (event) => {
-                    projectPage(Projects.GetProjects()[x]);
-                })
                 project.title.dropdownIcon.src = dropdownIcon;
                 project.title.dropdownIcon.classList.add(`svg-large`);
 
@@ -284,8 +303,12 @@ export const projects = () => {
 
                 project.container.appendChild(project.title.container);
 
+                project.tasks = document.createElement(`div`);
+                project.tasks.classList.add(`tasksContainer`);
+                project.tasks.style.display = `none`;
+
                 for (let y = 0; y < Projects.GetProjects()[x].GetTasks().length; y++) {
-                    let taskList = Projects.GetProjects()[x].GetTasks();
+                    let task = Projects.GetProjects()[x].GetTasks()[y];
                     project.task = {
                         container: document.createElement(`div`),
                         checkbox: document.createElement(`input`),
@@ -297,10 +320,9 @@ export const projects = () => {
                     }
 
                     project.task.container.classList.add(`project_task`);
-                    project.task.container.style.display = `none`;
                     project.task.checkbox.setAttribute(`type`, `checkbox`);
-                    project.task.description.title.textContent = taskList[y].title;
-                    project.task.description.text.textContent = taskList[y].desc;
+                    project.task.description.title.textContent = task.title;
+                    project.task.description.text.textContent = task.desc;
 
                     project.task.description.container.append(
                         project.task.description.title,
@@ -312,21 +334,19 @@ export const projects = () => {
                         project.task.description.container,
                     );
 
-                    project.container.appendChild(project.task.container);
-
-                    content.body.appendChild(project.container);
+                    project.tasks.appendChild(project.task.container);
                 }
+
+                project.container.appendChild(project.tasks);
 
                 project.title.dropdownIcon.addEventListener(`click`, (event) => {
                     event.stopPropagation();
                     project.container.classList.toggle(`active`);
-                    project.container.querySelectorAll(`.project_task`).forEach((e) => {
-                        if (project.container.classList.contains(`active`)) {
-                            e.style.display = `flex`;
-                        } else {
-                            e.style.display = `none`;
-                        }
-                    })
+                    if (project.container.classList.contains(`active`)) {
+                        project.tasks.style.display = `flex`;
+                    } else {
+                        project.tasks.style.display = `none`;
+                    }
                 })
 
                 project.container.addEventListener(`click`, () => {

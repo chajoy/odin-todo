@@ -167,7 +167,7 @@ main {
     cursor: pointer;
 }
 
-.project.active img {
+.active img {
     transform: rotate(180deg);
 }
 
@@ -184,6 +184,10 @@ main {
 .project_title img:hover {
     cursor: pointer;
     transform: scale(1.1);
+}
+
+.tasksContainer {
+    flex-direction: column;
 }
 
 .svg-large {
