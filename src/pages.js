@@ -201,7 +201,7 @@ document.querySelectorAll(`.sidebar button`).forEach((e) => e.addEventListener(`
             home();
             break;
         case `btn-projects`:
-            projects(Projects.GetProjects());
+            projects();
             break;
         default:
             break;
@@ -220,10 +220,64 @@ export const home = () => {
     } else {
         clearDOM();
 
-        let content = document.createElement(`h1`);
-        content.textContent = `what's next on your todo. list?`;
+        let content = {
+            header: {
+                container: document.createElement(`div`),
+                title: document.createElement(`h1`),
+            },
+            body: {
+                container: document.createElement(`div`),
+            }
+        };
 
-        container.appendChild(content);
+        content.header.container.classList.add(`page-header`);
+        content.header.title.textContent = `what's next on your todo. list?`;
+        content.header.container.append(
+            content.header.title,
+        );
+
+        let card = {
+            recents: {
+                container: document.createElement(`div`),
+                title: document.createElement(`h1`),
+            }
+        };
+
+        card.recents.title.textContent = `recent projects.`;
+        card.recents.container.classList.add(`card`);
+
+        card.recents.container.append(
+            card.recents.title,
+        );
+
+        //build recent card
+        let recent_projects = Projects.GetProjects().slice(Projects.GetProjects().length - 3);
+
+        for (let x = 0; x < recent_projects.length; x++) {
+            let project = {
+                container: document.createElement(`div`),
+                title: document.createElement(`h2`),
+            }
+
+            project.title.textContent = recent_projects[x].title;
+            project.container.classList.add(`box`);
+            project.container.appendChild(project.title);
+
+            card.recents.container.appendChild(project.container);
+        }
+
+        content.body.container.classList.add(`cardview`);
+        content.body.container.classList.add(`page-body`);
+        content.body.container.append(
+            card.recents.container,
+        );
+
+        //
+
+        container.append(
+            content.header.container,
+            content.body.container,
+        );
     }
 };
 

@@ -10,7 +10,7 @@ document.getElementById(`btn_darkMode`).addEventListener(`click`, (e) => {
     } else {
         e.target.textContent = `dark mode.`;
     }
-})
+});
 
 export const Projects = (() => {
     const projects = [];
@@ -80,3 +80,15 @@ function Task(title, desc, dueDate, prio) {
 generateTempData();
 
 build_home();
+
+//dev
+const darkModeToggle = (() => {
+    let button = document.querySelector(`#btn_darkMode`);
+    document.body.classList.toggle(`dark`);
+    if (document.body.classList.contains(`dark`)) {
+        button.textContent = `light mode.`;
+    } else {
+        button.textContent = `dark mode.`;
+    }
+})();
+
