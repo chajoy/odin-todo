@@ -3,6 +3,7 @@ import dropdownIcon from "./img/arrow-down-short.svg";
 import deleteIcon from "./img/trash-fill.svg";
 import editIcon from "./img/pencil-fill.svg";
 import { Projects } from "./index";
+import { getDate } from "./utils";
 
 const container = document.querySelector(`main`);
 
@@ -223,17 +224,20 @@ export const home = () => {
         let content = {
             header: {
                 container: document.createElement(`div`),
-                title: document.createElement(`h1`),
+                date: document.createElement(`h1`),
             },
             body: {
                 container: document.createElement(`div`),
-            }
+            },
+            title: document.createElement(`h2`),
         };
 
+        content.header.date.textContent = getDate();
+
         content.header.container.classList.add(`page-header`);
-        content.header.title.textContent = `what's next on your todo. list?`;
+        content.title.textContent = `what's next on your todo. list?`;
         content.header.container.append(
-            content.header.title,
+            content.header.date,
         );
 
         let card = {
@@ -276,6 +280,7 @@ export const home = () => {
 
         container.append(
             content.header.container,
+            content.title,
             content.body.container,
         );
     }
