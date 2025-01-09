@@ -55,9 +55,13 @@ export const modal = (() => {
 
         form.container.addEventListener(`input`, () => {
             form.input.setCustomValidity(``);
-            if (Projects.GetProjects().find((e) => e.title.toLowerCase() === form.input.value.toLowerCase()) && project.title.toLowerCase() != form.input.value.toLowerCase()) {
-                form.input.setCustomValidity(` `);
-                return;
+            if (Projects.GetProjects().find((e) => e.title.toLowerCase() === form.input.value.toLowerCase())) {
+                if (type === `edit` && project.title.toLowerCase() == form.input.value.toLowerCase()) {
+                    form.input.setCustomValidity(``);
+                } else {
+                    form.input.setCustomValidity(` `);
+                    return;
+                }
             }
             form.input.reportValidity();
         })
