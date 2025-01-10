@@ -3,17 +3,13 @@ import dropdownIcon from "./img/arrow-down-short.svg";
 import deleteIcon from "./img/trash-fill.svg";
 import editIcon from "./img/pencil-fill.svg";
 import { Projects } from "./index";
-import { getDate } from "./utils";
+import { GetDate } from "./utils";
 
 const container = document.querySelector(`main`);
 
 export const modal = (() => {
     const container = document.getElementById(`modal-container`);
     const content = document.getElementById(`modal-content`);
-    const input = document.querySelector(`#modal-container input`);
-    const submit = document.getElementById(`btn-submit`);
-    const back = document.getElementById(`btn-back`);
-    const form = document.querySelector(`#modal-container form`);
 
     const form_proj = (type, project) => {
         while (content.firstChild) {
@@ -36,11 +32,13 @@ export const modal = (() => {
         }
 
         form.btn_back.classList.add(`button`);
+        form.btn_back.classList.add(`hover`);
         form.btn_back.setAttribute(`id`, `btn-back`);
         form.btn_back.setAttribute(`type`, `button`);
         form.btn_back.textContent = `back`;
 
         form.btn_submit.classList.add(`button`);
+        form.btn_submit.classList.add(`hover`);
         form.btn_submit.setAttribute(`type`, `submit`);
         form.btn_submit.textContent = type;
 
@@ -72,11 +70,11 @@ export const modal = (() => {
             if (type === `edit`) {
                 project.title = form.input.value;
                 Close();
-                projectPage(project);
+                page_project(project);
             } else {
                 Projects.Add(form.input.value);
                 Close();
-                projects();
+                page_projects();
             }
         })
 
@@ -114,16 +112,14 @@ export const modal = (() => {
         form.input.desc.setAttribute(`placeholder`, `task description`);
         form.input.desc.required = true;
 
-        // if (type === `edit`) {
-        //     form.input.value = project.title;
-        // }
-
         form.btn_back.classList.add(`button`);
+        form.btn_back.classList.add(`hover`);
         form.btn_back.setAttribute(`id`, `btn-back`);
         form.btn_back.setAttribute(`type`, `button`);
         form.btn_back.textContent = `back`;
 
         form.btn_submit.classList.add(`button`);
+        form.btn_submit.classList.add(`hover`);
         form.btn_submit.setAttribute(`type`, `submit`);
         form.btn_submit.textContent = type;
 
@@ -138,27 +134,18 @@ export const modal = (() => {
             Close();
         })
 
-        // form.container.addEventListener(`input`, () => {
-        //     form.input.setCustomValidity(``);
-        //     if (Projects.GetProjects().find((e) => e.title.toLowerCase() === form.input.value.toLowerCase()) && project.title.toLowerCase() != form.input.value.toLowerCase()) {
-        //         form.input.setCustomValidity(` `);
-        //         return;
-        //     }
-        //     form.input.reportValidity();
-        // })
-
         form.container.addEventListener(`submit`, (e) => {
             e.preventDefault();
             if (type === `edit`) {
                 task.title = form.input.title.value;
                 task.desc = form.input.desc.value;
                 Close();
-                projectPage(project);
+                page_project(project);
             } else {
                 project.AddTask(form.input.title.value, form.input.desc.value, `test`, `test`);
             }
             Close();
-            projectPage(project);
+            page_project(project);
         })
 
         content.appendChild(form.container);
@@ -199,10 +186,10 @@ export const modal = (() => {
 document.querySelectorAll(`.sidebar button`).forEach((e) => e.addEventListener(`click`, () => {
     switch (e.getAttribute(`id`)) {
         case `btn-home`:
-            home();
+            page_home();
             break;
         case `btn-projects`:
-            projects();
+            page_projects();
             break;
         default:
             break;
@@ -215,7 +202,7 @@ function clearDOM() {
     }
 }
 
-export const home = () => {
+export const page_home = () => {
     if (!document.querySelector(`main`)) {
         console.error(`Can't Find "main" Container`);
     } else {
@@ -231,7 +218,7 @@ export const home = () => {
             },
         };
 
-        content.header.date.textContent = getDate().date;
+        content.header.date.textContent = GetDate().date;
 
         content.header.container.classList.add(`page-header`);
         content.header.container.append(
@@ -272,6 +259,7 @@ export const home = () => {
                 project.container.classList.add(`box`);
                 project.container.classList.add(`hover`);
                 project.container.appendChild(project.title);
+                project.container.setAttribute(`p_id`, recent_projects[x].GetProjectID());
 
                 card.recent_projects.container.appendChild(project.container);
             }
@@ -299,6 +287,7 @@ export const home = () => {
                 task.container.classList.add(`box`);
                 task.container.classList.add(`hover`);
                 task.container.appendChild(task.title);
+                task.container.setAttribute(`t_id`, recent_tasks[x].GetTaskID());
 
                 card.recent_tasks.container.appendChild(task.container);
             }
@@ -318,7 +307,7 @@ export const home = () => {
     }
 };
 
-export const projects = () => {
+export const page_projects = () => {
     if (!document.querySelector(`main`)) {
         console.error(`Can't Find "main" Container`);
     } else {
@@ -379,7 +368,8 @@ export const projects = () => {
         if (!Projects.GetProjects()) {
             console.warn(`Projects Array is Null`);
         } else {
-            for (let x = 0; x < Projects.GetProjects().length; x++) {
+            let projects = Projects.GetProjects();
+            for (let x = 0; x < projects.length; x++) {
                 const project = {
                     container: document.createElement(`div`),
                     title: {
@@ -392,9 +382,10 @@ export const projects = () => {
                 project.container.classList.add(`project`);
                 project.container.classList.add(`box`);
                 project.container.classList.add(`hover`);
+                project.container.setAttribute(`p_id`, projects[x].GetProjectID());
                 project.title.container.classList.add(`project_title`);
                 project.title.text.classList.add(`f_orange`);
-                project.title.text.textContent = `${Projects.GetProjects()[x].title} (${Projects.GetProjects()[x].GetTasks().length})`;
+                project.title.text.textContent = `${projects[x].title} (${projects[x].GetTasks().length})`;
 
                 project.title.dropdownIcon.src = dropdownIcon;
                 project.title.dropdownIcon.classList.add(`svg-large`);
@@ -410,8 +401,9 @@ export const projects = () => {
                 project.tasks.classList.add(`tasksContainer`);
                 project.tasks.style.display = `none`;
 
-                for (let y = 0; y < Projects.GetProjects()[x].GetTasks().length; y++) {
-                    let task = Projects.GetProjects()[x].GetTasks()[y];
+                let tasks = projects[x].GetTasks();
+                for (let y = 0; y < tasks.length; y++) {
+                    let task = tasks[y];
                     project.task = {
                         container: document.createElement(`div`),
                         description: {
@@ -422,6 +414,7 @@ export const projects = () => {
                     }
 
                     project.task.container.classList.add(`project_task`);
+                    project.task.container.setAttribute(`t_id`, task.GetTaskID());
                     project.task.description.title.textContent = task.title;
                     project.task.description.text.textContent = task.desc;
 
@@ -450,7 +443,7 @@ export const projects = () => {
                 })
 
                 project.container.addEventListener(`click`, () => {
-                    projectPage(Projects.GetProjects()[x]);
+                    page_project(projects[x]);
                 })
 
                 content.body.appendChild(project.container);
@@ -461,7 +454,7 @@ export const projects = () => {
     }
 };
 
-const projectPage = (project) => {
+const page_project = (project) => {
     clearDOM();
 
     let content = {
@@ -488,7 +481,7 @@ const projectPage = (project) => {
     content.header.deleteIcon.classList.add(`svg-mid`);
     content.header.deleteIcon.addEventListener(`click`, () => {
         Projects.Remove(project.title);
-        projects();
+        page_projects();
     })
 
     content.header.addIcon.src = plusIcon;
@@ -507,12 +500,14 @@ const projectPage = (project) => {
     content.header.container.classList.add(`page-header`);
     content.body.classList.add(`page-body`);
 
-    if (project.GetTasks().length === 0) {
+    let tasks = project.GetTasks();
+
+    if (tasks.length === 0) {
         let text = document.createElement(`p`);
         text.textContent = `Can't see any todos, Create some tasks to get started`;
         content.body.appendChild(text);
     } else {
-        for (let x = 0; x < project.GetTasks().length; x++) {
+        for (let x = 0; x < tasks.length; x++) {
             let task = {
                 container: document.createElement(`div`),
                 text: {
@@ -524,8 +519,8 @@ const projectPage = (project) => {
                 btn_edit: document.createElement(`img`),
             }
 
-            task.text.title.textContent = project.GetTasks()[x].title;
-            task.text.desc.textContent = project.GetTasks()[x].desc;
+            task.text.title.textContent = tasks[x].title;
+            task.text.desc.textContent = tasks[x].desc;
 
             task.btn_delete.src = deleteIcon;
             task.btn_delete.classList.add(`svg-mid`);
@@ -536,12 +531,12 @@ const projectPage = (project) => {
             task.btn_delete.addEventListener(`click`, (event) => {
                 event.stopPropagation();
                 project.RemoveTask(x);
-                projectPage(project);
+                page_project(project);
             })
 
             task.btn_edit.addEventListener(`click`, (e) => {
                 e.stopPropagation();
-                modal.Open(`edit-task`, project, project.GetTasks()[x]);
+                modal.Open(`edit-task`, project, tasks[x]);
             })
 
             task.text.container.append(
@@ -558,6 +553,7 @@ const projectPage = (project) => {
             task.container.classList.add(`box`);
             task.container.classList.add(`hover`);
             task.container.classList.add(`task`);
+            task.container.setAttribute(`t_id`, tasks[x].GetTaskID());
 
             content.body.appendChild(task.container);
         }

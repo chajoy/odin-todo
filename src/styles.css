@@ -220,11 +220,11 @@ main {
 }
 
 .recent_projects {
-    background-color: var(--alternate);
+    background-color: var(--blue);
 }
 
 .recent_tasks {
-    background-color: var(--alternate);
+    background-color: var(--green);
 }
 
 .box {

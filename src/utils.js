@@ -1,4 +1,4 @@
-export const getDate = () => {
+export const GetDate = () => {
     let _date = new Date();
 
     let date = new Intl.DateTimeFormat(`en-US`, {

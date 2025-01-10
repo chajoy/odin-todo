@@ -1,8 +1,8 @@
 import "./styles.css";
-import { home as build_home, projects as build_projects } from "./pages";
+import { page_home } from "./pages";
 //remove this when not using temp_data.js
 import { generateTempData } from "./temp_data";
-import { getDate } from "./utils";
+import { GetDate } from "./utils";
 
 document.getElementById(`btn_darkMode`).addEventListener(`click`, (e) => {
     document.body.classList.toggle(`dark`);
@@ -14,6 +14,9 @@ document.getElementById(`btn_darkMode`).addEventListener(`click`, (e) => {
 });
 
 export const Projects = (() => {
+
+    let p_id = 0, t_id = 0;
+
     const projects = [];
 
     const GetProjects = () => projects;
@@ -42,9 +45,9 @@ export const Projects = (() => {
                     recentTasks.push(task);
                 } else {
                     let lastTask = recentTasks[0];
-                    if (lastTask.getDateCreated().getTime() < task.getDateCreated().getTime()) {
+                    if (lastTask.GetDateCreated().getTime() < task.GetDateCreated().getTime()) {
                         recentTasks.push(task);
-                        recentTasks.sort((a, b) => a.getDateCreated().getTime() - b.getDateCreated().getTime());
+                        recentTasks.sort((a, b) => a.GetDateCreated().getTime() - b.GetDateCreated().getTime());
                         recentTasks.shift();
                     }
                 }
@@ -53,18 +56,33 @@ export const Projects = (() => {
         return recentTasks;
     }
 
+    const CreateTaskID = () => {
+        t_id++;
+        return t_id;
+    }
+
+    const CreateProjectID = () => {
+        p_id++;
+        return p_id;
+    }
+
     return {
         GetProject,
         GetProjects,
         Add,
         Remove,
         RecentTasks,
+        CreateProjectID,
+        CreateTaskID,
     }
 })();
 
 export const GetProjects = Projects.GetProjects();
 
 function Project(title) {
+
+    const project_id = Projects.CreateProjectID();
+
     const tasks = [];
 
     const GetTasks = () => tasks;
@@ -78,6 +96,7 @@ function Project(title) {
         }
     };
 
+    const GetProjectID = () => project_id;
 
     return {
         title,
@@ -85,25 +104,32 @@ function Project(title) {
         GetTasks,
         RemoveTask,
         GetTask,
+        GetProjectID,
     }
 };
 
 function Task(title, desc, dueDate, prio) {
-    const dateCreated = getDate().datewTime;
 
-    const getDateCreated = () => dateCreated;
+    const task_id = Projects.CreateTaskID();
+
+    const dateCreated = GetDate().datewTime;
+
+    const GetDateCreated = () => dateCreated;
+
+    const GetTaskID = () => task_id;
 
     return {
         title,
         desc,
         dueDate,
         prio,
-        getDateCreated,
+        GetDateCreated,
+        GetTaskID,
     }
 }
 
 //remove this when not using temp_data.js
 generateTempData();
 
-build_home();
+page_home();
 
