@@ -5,6 +5,11 @@
     --border: #dfdfdf;
     --alternate: #eeeeee;
     --font: black;
+
+    --green: #b7e6d4;
+    --blue: #c4d6e8;
+    --orange: #f5c2a4;
+    --purple: #d0a8e5;
 }
 
 .dark {
@@ -14,7 +19,13 @@
     --border: #44475a;
     --alternate: #33344a;
     --font: #e4e4e4;
+
+    --green: #5a7d71;
+    --blue: #4b6a80;
+    --orange: #7a5a3a;
+    --purple: #6d4e8d;
 }
+
 
 *,
 *::before,
@@ -27,6 +38,7 @@
 }
 
 body {
+    color: var(--font);
     user-select: none;
     -webkit-font-smoothing: antialiased;
     font-family: "Outfit", sans-serif;
@@ -63,6 +75,10 @@ h5,
 h6 {
     color: var(--font);
     overflow-wrap: break-word;
+}
+
+h2 {
+    font-weight: 500;
 }
 
 p {
@@ -137,12 +153,6 @@ h6 {
     color: var(--font);
 }
 
-.button:hover {
-    border-color: var(--highlight);
-    transform: scale(1.03);
-    cursor: pointer;
-}
-
 main {
     display: flex;
     flex-direction: column;
@@ -190,18 +200,31 @@ main {
 .cardview {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    gap: 20px;
 }
 
 .card {
-    background-color: var(--alternate);
     padding: 20px;
     border-radius: 10px;
     display: grid;
     gap: 20px;
 }
 
+.card h1 {
+    text-align: right;
+}
+
 .card .box {
     margin: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.recent_projects {
+    background-color: var(--alternate);
+}
+
+.recent_tasks {
+    background-color: var(--alternate);
 }
 
 .box {
@@ -209,10 +232,13 @@ main {
     border-radius: 10px;
     padding: 20px;
     margin: 0 0 20px;
+}
+
+.hover {
     transition: transform .5s;
 }
 
-.box:hover {
+.hover:hover {
     outline: 2px solid var(--highlight);
     transform: scale(1.03);
     cursor: pointer;

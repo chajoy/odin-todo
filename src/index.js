@@ -2,6 +2,7 @@ import "./styles.css";
 import { home as build_home, projects as build_projects } from "./pages";
 //remove this when not using temp_data.js
 import { generateTempData } from "./temp_data";
+import { getDate } from "./utils";
 
 document.getElementById(`btn_darkMode`).addEventListener(`click`, (e) => {
     document.body.classList.toggle(`dark`);
@@ -33,12 +34,31 @@ export const Projects = (() => {
             console.error(`Project ${project} doesn't exist`);
         }
     }
+    const RecentTasks = () => {
+        let recentTasks = [];
+        projects.forEach((project) => {
+            project.GetTasks().forEach((task) => {
+                if (recentTasks.length < 3) {
+                    recentTasks.push(task);
+                } else {
+                    let lastTask = recentTasks[0];
+                    if (lastTask.getDateCreated().getTime() < task.getDateCreated().getTime()) {
+                        recentTasks.push(task);
+                        recentTasks.sort((a, b) => a.getDateCreated().getTime() - b.getDateCreated().getTime());
+                        recentTasks.shift();
+                    }
+                }
+            })
+        })
+        return recentTasks;
+    }
 
     return {
         GetProject,
         GetProjects,
         Add,
         Remove,
+        RecentTasks,
     }
 })();
 
@@ -58,6 +78,7 @@ function Project(title) {
         }
     };
 
+
     return {
         title,
         AddTask,
@@ -68,11 +89,16 @@ function Project(title) {
 };
 
 function Task(title, desc, dueDate, prio) {
+    const dateCreated = getDate().datewTime;
+
+    const getDateCreated = () => dateCreated;
+
     return {
         title,
         desc,
         dueDate,
         prio,
+        getDateCreated,
     }
 }
 
@@ -80,15 +106,4 @@ function Task(title, desc, dueDate, prio) {
 generateTempData();
 
 build_home();
-
-//dev
-const darkModeToggle = (() => {
-    let button = document.querySelector(`#btn_darkMode`);
-    document.body.classList.toggle(`dark`);
-    if (document.body.classList.contains(`dark`)) {
-        button.textContent = `light mode.`;
-    } else {
-        button.textContent = `dark mode.`;
-    }
-})();
 

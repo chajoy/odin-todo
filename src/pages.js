@@ -229,58 +229,90 @@ export const home = () => {
             body: {
                 container: document.createElement(`div`),
             },
-            title: document.createElement(`h2`),
         };
 
-        content.header.date.textContent = getDate();
+        content.header.date.textContent = getDate().date;
 
         content.header.container.classList.add(`page-header`);
-        content.title.textContent = `what's next on your todo. list?`;
         content.header.container.append(
             content.header.date,
         );
 
         let card = {
-            recents: {
+            recent_projects: {
+                container: document.createElement(`div`),
+                title: document.createElement(`h1`),
+            },
+            recent_tasks: {
                 container: document.createElement(`div`),
                 title: document.createElement(`h1`),
             }
         };
 
-        card.recents.title.textContent = `recent projects.`;
-        card.recents.container.classList.add(`card`);
+        //build recent_projects
 
-        card.recents.container.append(
-            card.recents.title,
+        card.recent_projects.title.textContent = `recent projects.`;
+        card.recent_projects.container.classList.add(`card`);
+        card.recent_projects.container.classList.add(`recent_projects`);
+
+        card.recent_projects.container.append(
+            card.recent_projects.title,
         );
 
-        //build recent card
-        let recent_projects = Projects.GetProjects().slice(Projects.GetProjects().length - 3);
+        let recent_projects = Projects.GetProjects().slice(- 3);
 
-        for (let x = 0; x < recent_projects.length; x++) {
-            let project = {
-                container: document.createElement(`div`),
-                title: document.createElement(`h2`),
+        if (recent_projects != 0) {
+            for (let x = recent_projects.length - 1; x >= 0; x--) {
+                let project = {
+                    container: document.createElement(`div`),
+                    title: document.createElement(`h2`),
+                }
+
+                project.title.textContent = recent_projects[x].title;
+                project.container.classList.add(`box`);
+                project.container.classList.add(`hover`);
+                project.container.appendChild(project.title);
+
+                card.recent_projects.container.appendChild(project.container);
             }
+        }
 
-            project.title.textContent = recent_projects[x].title;
-            project.container.classList.add(`box`);
-            project.container.appendChild(project.title);
+        //build recent_tasks
+        card.recent_tasks.title.textContent = `recent tasks.`;
+        card.recent_tasks.container.classList.add(`card`);
+        card.recent_tasks.container.classList.add(`recent_tasks`);
 
-            card.recents.container.appendChild(project.container);
+        card.recent_tasks.container.append(
+            card.recent_tasks.title,
+        );
+
+        let recent_tasks = Projects.RecentTasks();
+
+        if (recent_tasks != 0) {
+            for (let x = recent_tasks.length - 1; x >= 0; x--) {
+                let task = {
+                    container: document.createElement(`div`),
+                    title: document.createElement(`h2`),
+                }
+
+                task.title.textContent = recent_tasks[x].title;
+                task.container.classList.add(`box`);
+                task.container.classList.add(`hover`);
+                task.container.appendChild(task.title);
+
+                card.recent_tasks.container.appendChild(task.container);
+            }
         }
 
         content.body.container.classList.add(`cardview`);
         content.body.container.classList.add(`page-body`);
         content.body.container.append(
-            card.recents.container,
+            card.recent_projects.container,
+            card.recent_tasks.container,
         );
-
-        //
 
         container.append(
             content.header.container,
-            content.title,
             content.body.container,
         );
     }
@@ -359,6 +391,7 @@ export const projects = () => {
 
                 project.container.classList.add(`project`);
                 project.container.classList.add(`box`);
+                project.container.classList.add(`hover`);
                 project.title.container.classList.add(`project_title`);
                 project.title.text.classList.add(`f_orange`);
                 project.title.text.textContent = `${Projects.GetProjects()[x].title} (${Projects.GetProjects()[x].GetTasks().length})`;
@@ -523,6 +556,7 @@ const projectPage = (project) => {
             );
 
             task.container.classList.add(`box`);
+            task.container.classList.add(`hover`);
             task.container.classList.add(`task`);
 
             content.body.appendChild(task.container);
