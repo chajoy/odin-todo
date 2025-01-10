@@ -1,7 +1,7 @@
 import "./styles.css";
 import { page_home } from "./pages";
 //remove this when not using temp_data.js
-import { generateTempData } from "./temp_data";
+import { GenerateTempData } from "./temp_data";
 import { GetDate } from "./utils";
 
 document.getElementById(`btn_darkMode`).addEventListener(`click`, (e) => {
@@ -130,7 +130,16 @@ function Task(title, desc, dueDate, prio) {
 }
 
 //remove this when not using temp_data.js
-generateTempData();
+GenerateTempData();
 
 page_home();
 
+const DarkMode = (() => {
+    const button = document.querySelector(`#btn_darkMode`);
+    document.body.classList.toggle(`dark`);
+    if (document.body.classList.contains(`dark`)) {
+        button.textContent = `light mode.`;
+    } else {
+        button.textContent = `dark mode.`;
+    }
+})();

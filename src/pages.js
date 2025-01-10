@@ -4,6 +4,7 @@ import deleteIcon from "./img/trash-fill.svg";
 import editIcon from "./img/pencil-fill.svg";
 import { Projects } from "./index";
 import { GetDate } from "./utils";
+import { formatDistance } from "date-fns";
 
 const container = document.querySelector(`main`);
 
@@ -419,13 +420,37 @@ export const page_projects = () => {
                             container: document.createElement(`div`),
                             title: document.createElement(`h3`),
                             text: document.createElement(`p`),
+                            dueDate: document.createElement(`p`),
+                            prio: document.createElement(`p`),
                         }
                     }
 
                     project.task.container.classList.add(`project_task`);
                     project.task.container.setAttribute(`t_id`, task.GetTaskID());
+
                     project.task.description.title.textContent = task.title;
                     project.task.description.text.textContent = task.desc;
+
+                    let interval = formatDistance(task.dueDate, new Date());
+
+                    project.task.description.dueDate.textContent = interval;
+
+                    project.task.description.prio.textContent = task.prio;
+                    project.task.description.prio.classList.add(`prio`);
+
+                    switch (task.prio) {
+                        case `low`:
+                            project.task.description.prio.classList.add(`low`);
+                            break;
+                        case `medium`:
+                            project.task.description.prio.classList.add(`medium`);
+                            break;
+                        case `high`:
+                            project.task.description.prio.classList.add(`high`);
+                            break;
+                        default:
+                            break;
+                    }
 
                     project.task.description.container.append(
                         project.task.description.title,
@@ -434,6 +459,8 @@ export const page_projects = () => {
 
                     project.task.container.append(
                         project.task.description.container,
+                        project.task.description.dueDate,
+                        project.task.description.prio,
                     );
 
                     project.tasks.appendChild(project.task.container);
