@@ -547,44 +547,74 @@ const page_project = (project) => {
             let task = {
                 container: document.createElement(`div`),
                 text: {
-                    container: document.createElement(`div`),
                     title: document.createElement(`h2`),
                     desc: document.createElement(`p`),
+                    prio: document.createElement(`p`),
+                    dueDate: document.createElement(`p`),
                 },
-                btn_delete: document.createElement(`img`),
-                btn_edit: document.createElement(`img`),
+                btns: {
+                    container: document.createElement(`div`),
+                    btn_delete: document.createElement(`img`),
+                    btn_edit: document.createElement(`img`),
+                },
             }
 
             task.text.title.textContent = tasks[x].title;
             task.text.desc.textContent = tasks[x].desc;
+            task.text.prio.textContent = tasks[x].prio;
 
-            task.btn_delete.src = deleteIcon;
-            task.btn_delete.classList.add(`svg-mid`);
+            let interval = formatDistance(tasks[x].dueDate, new Date());
+            task.text.dueDate.textContent = interval;
 
-            task.btn_edit.src = editIcon;
-            task.btn_edit.classList.add(`svg-mid`);
+            task.text.prio.classList.add(`prio`);
+            switch (tasks[x].prio) {
+                case `low`:
+                    task.text.prio.classList.add(`low`);
+                    break;
+                case `medium`:
+                    task.text.prio.classList.add(`medium`);
+                    break;
+                case `high`:
+                    task.text.prio.classList.add(`high`);
+                    break;
+                default:
+                    break;
+            }
 
-            task.btn_delete.addEventListener(`click`, (event) => {
+            task.btns.btn_delete.src = deleteIcon;
+            task.btns.btn_delete.classList.add(`svg-mid`);
+
+            task.btns.btn_edit.src = editIcon;
+            task.btns.btn_edit.classList.add(`svg-mid`);
+
+            task.btns.btn_edit.classList.add(`btn`);
+            task.btns.btn_delete.classList.add(`btn`);
+
+            task.btns.btn_delete.addEventListener(`click`, (event) => {
                 event.stopPropagation();
                 let task_div = event.target.closest(`.box`);
                 project.RemoveTask(task_div.getAttribute(`t_id`));
                 page_project(project);
             })
 
-            task.btn_edit.addEventListener(`click`, (e) => {
+            task.btns.btn_edit.addEventListener(`click`, (e) => {
                 e.stopPropagation();
                 modal.Open(`edit-task`, project, tasks[x]);
             })
 
-            task.text.container.append(
-                task.text.title,
-                task.text.desc,
+            task.btns.container.classList.add(`btns-container`);
+
+            task.btns.container.append(
+                task.btns.btn_edit,
+                task.btns.btn_delete,
             );
 
             task.container.append(
-                task.text.container,
-                task.btn_edit,
-                task.btn_delete,
+                task.text.title,
+                task.text.desc,
+                task.text.dueDate,
+                task.text.prio,
+                task.btns.container,
             );
 
             task.container.classList.add(`box`);

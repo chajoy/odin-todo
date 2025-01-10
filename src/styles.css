@@ -198,9 +198,23 @@ main {
 
 .task {
     display: grid;
-    grid-template-columns: 1fr auto auto;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: repeat(4, auto);
+    gap: 20px;
     align-items: center;
-    gap: 10px;
+}
+
+.task * {
+    width: fit-content;
+}
+
+.btns-container {
+    grid-area: 1 / 2 / 5 / 3;
+}
+
+.btn {
+    display: inline-block;
+    margin: 10px;
 }
 
 .cardview {
