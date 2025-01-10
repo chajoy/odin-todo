@@ -265,6 +265,15 @@ export const page_home = () => {
             }
         }
 
+        card.recent_projects.container.addEventListener(`click`, (e) => {
+            let div = e.target.closest(`.box`);
+            if (div) {
+                page_project(Projects.GetProject(div.getAttribute(`p_id`)));
+            }
+
+
+        })
+
         //build recent_tasks
         card.recent_tasks.title.textContent = `recent tasks.`;
         card.recent_tasks.container.classList.add(`card`);
@@ -480,7 +489,7 @@ const page_project = (project) => {
     content.header.deleteIcon.src = deleteIcon;
     content.header.deleteIcon.classList.add(`svg-mid`);
     content.header.deleteIcon.addEventListener(`click`, () => {
-        Projects.Remove(project.title);
+        Projects.Remove(project.GetProjectID());
         page_projects();
     })
 
@@ -530,7 +539,8 @@ const page_project = (project) => {
 
             task.btn_delete.addEventListener(`click`, (event) => {
                 event.stopPropagation();
-                project.RemoveTask(x);
+                let task_div = event.target.closest(`.box`);
+                project.RemoveTask(task_div.getAttribute(`t_id`));
                 page_project(project);
             })
 

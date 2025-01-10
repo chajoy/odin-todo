@@ -20,7 +20,7 @@ export const Projects = (() => {
     const projects = [];
 
     const GetProjects = () => projects;
-    const GetProject = (project) => projects.find(e => e.title === project);
+    const GetProject = (project_id) => projects.find(e => e.GetProjectID() === Number(project_id));
     const Add = (project) => {
         if (projects.findIndex(e => e.title === project) >= 0) {
             console.error(`Project ${project} already exists`);
@@ -29,12 +29,12 @@ export const Projects = (() => {
         }
 
     }
-    const Remove = (project) => {
-        let index = projects.findIndex((e) => e.title.toLowerCase() === project.toLowerCase());
+    const Remove = (project_id) => {
+        let index = projects.findIndex((e) => e.GetProjectID() === Number(project_id));
         if (index >= 0) {
             projects.splice(index, 1);
         } else {
-            console.error(`Project ${project} doesn't exist`);
+            console.error(`Project ID ${project_id} doesn't exist`);
         }
     }
     const RecentTasks = () => {
@@ -86,15 +86,16 @@ function Project(title) {
     const tasks = [];
 
     const GetTasks = () => tasks;
-    const GetTask = (input) => tasks.length > 0 ? tasks[input] : `[Project: ${title}] Task List Empty`;
+    const GetTask = (task_id) => tasks.find(e => e.GetTaskID() === Number(task_id));
     const AddTask = (title, desc, dueDate, prio) => tasks.push(Task(title, desc, dueDate, prio));
-    const RemoveTask = (input) => {
-        if (input >= 0) {
-            tasks.splice(input, 1);
+    const RemoveTask = (task_id) => {
+        let index = tasks.findIndex((e) => e.GetTaskID() === Number(task_id));
+        if (index >= 0) {
+            tasks.splice(index, 1);
         } else {
-            console.log(`Task Does Not Exist`);
+            console.error(`Task ID ${task_id} doesn't exist`);
         }
-    };
+    }
 
     const GetProjectID = () => project_id;
 
