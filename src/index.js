@@ -3,6 +3,7 @@ import { page_home } from "./pages";
 //remove this when not using temp_data.js
 import { GenerateTempData } from "./temp_data";
 import { GetDate } from "./utils";
+import { isAfter } from "date-fns";
 
 document.getElementById(`btn_darkMode`).addEventListener(`click`, (e) => {
     document.body.classList.toggle(`dark`);
@@ -46,7 +47,7 @@ export const Projects = (() => {
                 } else {
                     let lastTask = recentTasks[0];
                     if (task.complete) {
-                    } else if (lastTask.GetDateCreated().getTime() < task.GetDateCreated().getTime()) {
+                    } else if (isAfter(task.GetDateCreated(), lastTask.GetDateCreated())) {
                         recentTasks.push(task);
                         recentTasks.sort((a, b) => a.GetDateCreated().getTime() - b.GetDateCreated().getTime());
                         recentTasks.shift();
@@ -55,6 +56,26 @@ export const Projects = (() => {
             })
         })
         return recentTasks;
+    }
+
+    const GetUrgentTasks = () => {
+        let urgentTasks = [];
+        projects.forEach((project) => {
+            project.GetTasks().forEach((task) => {
+                if (urgentTasks.length < 3) {
+                    urgentTasks.push(task);
+                } else {
+                    let lastTask = urgentTasks[0];
+                    if (task.complete) {
+                    } else if (isAfter(lastTask.dueDate, task.dueDate)) {
+                        urgentTasks.push(task);
+                        urgentTasks.sort((a, b) => a.dueDate - b.dueDate);
+                        urgentTasks.shift();
+                    }
+                }
+            })
+        })
+        return urgentTasks;
     }
 
     const CreateTaskID = () => {
@@ -75,6 +96,7 @@ export const Projects = (() => {
         RecentTasks,
         CreateProjectID,
         CreateTaskID,
+        GetUrgentTasks,
     }
 })();
 

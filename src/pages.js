@@ -255,6 +255,10 @@ export const page_home = () => {
             recent_tasks: {
                 container: document.createElement(`div`),
                 title: document.createElement(`h1`),
+            },
+            tasks_todo: {
+                container: document.createElement(`div`),
+                title: document.createElement(`h1`),
             }
         };
 
@@ -292,8 +296,6 @@ export const page_home = () => {
             if (div) {
                 page_project(Projects.GetProject(div.getAttribute(`p_id`)));
             }
-
-
         })
 
         //build recent_tasks
@@ -312,24 +314,71 @@ export const page_home = () => {
                 let task = {
                     container: document.createElement(`div`),
                     title: document.createElement(`h2`),
+                    desc: document.createElement(`p`),
                 }
 
                 task.title.textContent = recent_tasks[x].title;
+                task.desc.textContent = recent_tasks[x].desc;
                 task.container.classList.add(`box`);
                 task.container.classList.add(`hover`);
 
-                task.container.appendChild(task.title);
+                task.container.append(
+                    task.title,
+                    task.desc,
+                );
                 task.container.setAttribute(`t_id`, recent_tasks[x].GetTaskID());
 
                 card.recent_tasks.container.appendChild(task.container);
             }
         }
 
+        //build tasks todo
+        card.tasks_todo.title.textContent = `tasks todo.`;
+        card.tasks_todo.container.classList.add(`card`);
+        card.tasks_todo.container.classList.add(`tasks_todo`);
+
+        card.tasks_todo.container.append(
+            card.tasks_todo.title,
+        );
+
+        let urgentTasks = Projects.GetUrgentTasks();
+
+        if (urgentTasks != 0) {
+            for (let x = 0; x < urgentTasks.length; x++) {
+                let task = {
+                    container: document.createElement(`div`),
+                    title: document.createElement(`h2`),
+                    desc: document.createElement(`p`),
+                    dueDate: document.createElement(`p`),
+                }
+
+                task.title.textContent = urgentTasks[x].title;
+                task.desc.textContent = urgentTasks[x].desc;
+
+                let interval = formatDistance(urgentTasks[x].dueDate, new Date());
+                task.dueDate.textContent = interval;
+                task.dueDate.classList.add(`dueDate`);
+
+                task.container.classList.add(`box`);
+                task.container.classList.add(`hover`);
+
+                task.container.append(
+                    task.title,
+                    task.desc,
+                    task.dueDate,
+                );
+                task.container.setAttribute(`t_id`, recent_tasks[x].GetTaskID());
+
+                card.tasks_todo.container.appendChild(task.container);
+            }
+        }
+
         content.body.container.classList.add(`cardview`);
         content.body.container.classList.add(`page-body`);
         content.body.container.append(
-            card.recent_projects.container,
+            card.tasks_todo.container,
             card.recent_tasks.container,
+            card.recent_projects.container,
         );
 
         container.append(
