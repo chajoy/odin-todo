@@ -105,6 +105,7 @@ export const modal = (() => {
         form.input.title.required = true;
 
         form.input.dueDate.setAttribute(`type`, `date`);
+        form.input.dueDate.required = true;
 
         form.input.desc.setAttribute(`input`, `textarea`);
         form.input.desc.setAttribute(`placeholder`, `task description`);
@@ -316,6 +317,7 @@ export const page_home = () => {
                 task.title.textContent = recent_tasks[x].title;
                 task.container.classList.add(`box`);
                 task.container.classList.add(`hover`);
+
                 task.container.appendChild(task.title);
                 task.container.setAttribute(`t_id`, recent_tasks[x].GetTaskID());
 
@@ -447,6 +449,10 @@ export const page_projects = () => {
 
                     project.task.container.classList.add(`project_task`);
                     project.task.container.setAttribute(`t_id`, task.GetTaskID());
+
+                    if (task.complete) {
+                        project.task.description.container.classList.add(`complete`);
+                    }
 
                     project.task.description.title.textContent = task.title;
                     project.task.description.text.textContent = task.desc;
@@ -583,6 +589,10 @@ const page_project = (project) => {
             task.text.desc.textContent = tasks[x].desc;
             task.text.prio.textContent = tasks[x].prio;
 
+            if (tasks[x].complete) {
+                task.container.classList.add(`complete`);
+            }
+
             let interval = formatDistance(tasks[x].dueDate, new Date());
             task.text.dueDate.textContent = interval;
 
@@ -645,6 +655,15 @@ const page_project = (project) => {
             content.body.appendChild(task.container);
         }
     }
+
+    content.body.addEventListener(`click`, (e) => {
+        let div = e.target.closest(`.task`);
+        if (div) {
+            const task = project.GetTask(div.getAttribute(`t_id`));
+            task.complete = !task.complete;
+            page_project(project);
+        }
+    })
 
     container.append(
         content.header.container,

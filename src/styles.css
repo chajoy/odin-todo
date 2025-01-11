@@ -204,6 +204,13 @@ main {
     align-items: center;
 }
 
+.complete h2,
+.complete h3,
+.complete p:not(.prio) {
+    text-decoration: line-through;
+    opacity: 50%;
+}
+
 .task * {
     width: fit-content;
 }

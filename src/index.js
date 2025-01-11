@@ -45,7 +45,8 @@ export const Projects = (() => {
                     recentTasks.push(task);
                 } else {
                     let lastTask = recentTasks[0];
-                    if (lastTask.GetDateCreated().getTime() < task.GetDateCreated().getTime()) {
+                    if (task.complete) {
+                    } else if (lastTask.GetDateCreated().getTime() < task.GetDateCreated().getTime()) {
                         recentTasks.push(task);
                         recentTasks.sort((a, b) => a.GetDateCreated().getTime() - b.GetDateCreated().getTime());
                         recentTasks.shift();
@@ -118,6 +119,8 @@ function Task(title, desc, dueDate, prio) {
     const GetDateCreated = () => dateCreated;
 
     const GetTaskID = () => task_id;
+
+    let completed = false;
 
     return {
         title,
