@@ -93,21 +93,18 @@ export const modal = (() => {
             input: {
                 title: document.createElement(`input`),
                 desc: document.createElement(`textarea`),
+                dueDate: document.createElement(`input`),
+                prio: document.createElement(`select`),
             },
             btn_back: document.createElement(`button`),
             btn_submit: document.createElement(`button`),
         }
 
-        form.container.classList.add(`task`);
-
         form.input.title.setAttribute(`input`, `text`);
         form.input.title.setAttribute(`placeholder`, `task title`);
         form.input.title.required = true;
 
-        if (type === `edit`) {
-            form.input.title.value = task.title;
-            form.input.desc.value = task.desc;
-        }
+        form.input.dueDate.setAttribute(`type`, `date`);
 
         form.input.desc.setAttribute(`input`, `textarea`);
         form.input.desc.setAttribute(`placeholder`, `task description`);
@@ -124,9 +121,23 @@ export const modal = (() => {
         form.btn_submit.setAttribute(`type`, `submit`);
         form.btn_submit.textContent = type;
 
+        let options = [
+            `low`,
+            `medium`,
+            `high`,
+        ]
+
+        for (let x = 0; x < options.length; x++) {
+            let element = document.createElement(`option`);
+            element.textContent = options[x];
+            form.input.prio.appendChild(element);
+        }
+
         form.container.append(
             form.input.title,
             form.input.desc,
+            form.input.dueDate,
+            form.input.prio,
             form.btn_back,
             form.btn_submit,
         );
@@ -135,15 +146,24 @@ export const modal = (() => {
             Close();
         })
 
+        if (type === `edit`) {
+            form.input.title.value = task.title;
+            form.input.desc.value = task.desc;
+            form.input.dueDate.value = task.dueDate;
+            form.input.prio.value = task.prio;
+        }
+
         form.container.addEventListener(`submit`, (e) => {
             e.preventDefault();
             if (type === `edit`) {
                 task.title = form.input.title.value;
                 task.desc = form.input.desc.value;
+                task.dueDate = form.input.dueDate.value;
+                task.prio = form.input.prio.value;
                 Close();
                 page_project(project);
             } else {
-                project.AddTask(form.input.title.value, form.input.desc.value, `test`, `test`);
+                project.AddTask(form.input.title.value, form.input.desc.value, form.input.dueDate.value, form.input.prio.value);
             }
             Close();
             page_project(project);

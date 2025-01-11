@@ -348,11 +348,12 @@ main {
     display: grid;
     gap: 20px;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr auto;
+    grid-template-rows: repeat(4, auto);
 }
 
 .modal-content input,
-.modal-content textarea {
+.modal-content textarea,
+.modal-content select {
     grid-column: span 2;
     background-color: var(--secondary);
     padding: 30px;
@@ -360,6 +361,21 @@ main {
     border-bottom: 3px solid rgba(0, 0, 0, 0);
     border-radius: 10px 10px 0 0;
     color: var(--font);
+}
+
+.modal-content input[type="date"],
+.modal-content select {
+    grid-column: span 1;
+    font-size: 1rem;
+}
+
+.modal-content select {
+    border-bottom: 3px solid white;
+    appearance: none;
+}
+
+.dark input {
+    color-scheme: dark;
 }
 
 .modal-content input {
@@ -371,14 +387,15 @@ main {
     color: var(--highlight);
 }
 
-.modal-content .task textarea {
+.modal-content textarea {
     margin: none;
     resize: none;
     min-height: 200px;
 }
 
 .modal-content input:focus,
-.modal-content textarea:focus {
+.modal-content textarea:focus,
+.modal-content select:focus {
     outline: none;
 }
 
