@@ -30,9 +30,14 @@ export const Storage = (() => {
         localStorage.setItem(`projects_data`, JSON.stringify(Projects));
     }
 
+    const Clear = () => {
+        localStorage.clear();
+    }
+
     return {
         Retrieve,
         Save,
         TestStorage,
+        Clear,
     }
 })();

@@ -5,7 +5,11 @@ import { isAfter } from "date-fns";
 import { Storage } from "./storage";
 
 window.addEventListener(`beforeunload`, () => {
-    Storage.Save();
+    if (Projects.GetProjects().length > 0) {
+        Storage.Save();
+    } else {
+        Storage.Clear();
+    }
 })
 
 document.getElementById(`btn_darkMode`).addEventListener(`click`, (e) => {
@@ -15,6 +19,7 @@ document.getElementById(`btn_darkMode`).addEventListener(`click`, (e) => {
     } else {
         e.target.textContent = `dark mode.`;
     }
+
 });
 
 export const Projects = (() => {
