@@ -1,9 +1,12 @@
 import "./styles.css";
 import { page_home } from "./pages";
-//remove this when not using temp_data.js
-import { GenerateTempData } from "./temp_data";
 import { GetDate } from "./utils";
 import { isAfter } from "date-fns";
+import { Storage } from "./storage";
+
+window.addEventListener(`beforeunload`, () => {
+    Storage.Save();
+})
 
 document.getElementById(`btn_darkMode`).addEventListener(`click`, (e) => {
     document.body.classList.toggle(`dark`);
@@ -88,6 +91,20 @@ export const Projects = (() => {
         return p_id;
     }
 
+    const toJSON = () => {
+        return projects.map(project => ({
+            id: project.GetProjectID(),
+            title: project.title,
+            tasks: project.GetTasks().map(task => ({
+                id: task.GetTaskID(),
+                task_title: task.title,
+                desc: task.desc,
+                dueDate: task.dueDate,
+                prio: task.prio,
+            }))
+        }))
+    }
+
     return {
         GetProject,
         GetProjects,
@@ -97,6 +114,7 @@ export const Projects = (() => {
         CreateProjectID,
         CreateTaskID,
         GetUrgentTasks,
+        toJSON,
     }
 })();
 
@@ -154,17 +172,8 @@ function Task(title, desc, dueDate, prio) {
     }
 }
 
-//remove this when not using temp_data.js
-GenerateTempData();
+if (Storage.TestStorage()) {
+    Storage.Retrieve();
+}
 
 page_home();
-
-const DarkMode = (() => {
-    const button = document.querySelector(`#btn_darkMode`);
-    document.body.classList.toggle(`dark`);
-    if (document.body.classList.contains(`dark`)) {
-        button.textContent = `light mode.`;
-    } else {
-        button.textContent = `dark mode.`;
-    }
-})();
